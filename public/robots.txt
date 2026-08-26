@@ -1,0 +1,8 @@
+# https://zalak-patel.com/robots.txt
+User-agent: *
+Allow: /
+
+# Reference copies of the source artboard — not for indexing.
+Disallow: /design/
+
+Sitemap: https://zalak-patel.com/sitemap.xml

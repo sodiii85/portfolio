@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#0a0a0a}
+a{color:#8FD9C4}
+a:hover{color:#fff}
+.card{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:20px;position:relative;overflow:hidden;box-sizing:border-box}
+.label{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#8B8B8B;font-weight:500}
+.dot-bg{background-image:radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);background-size:16px 16px}
+</style>
+</helmet>
+
+<div style="{{outerStyle}}">
+<div style="{{wrapOuterStyle}}">
+<div ref="{{canvasRef}}" style="{{canvasStyle}}">
+
+  <div style="max-width:1600px;margin:0 auto;min-width:1180px;overflow-x:auto;position:relative;box-sizing:border-box">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px">
+      <div style="display:flex;align-items:center;gap:2px;border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:6px;background:#111">
+        <span style="background:#fff;color:#0a0a0a;font-weight:600;font-size:13px;padding:8px 18px;border-radius:100px">2D</span>
+        <span style="color:#8B8B8B;font-size:13px;padding:8px 16px">3D</span>
+        <span style="color:#8B8B8B;font-size:13px;padding:8px 16px">VR</span>
+        <span style="color:#8B8B8B;font-size:13px;padding:8px 16px">AR</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:2px;border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:6px;background:#111">
+        <span style="background:#fff;color:#0a0a0a;font-weight:600;font-size:13px;padding:8px 22px;border-radius:100px;border:2px solid #4C8DFF">Dashboard</span>
+        <span style="color:#8B8B8B;font-size:13px;padding:8px 18px">Case Studies</span>
+        <span style="color:#8B8B8B;font-size:13px;padding:8px 18px">AI</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="background:#111;border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:12px 20px;font-size:13px;color:#C9C9C9">0 px/s</span>
+        <span style="width:40px;height:40px;border-radius:50%;background:#111;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:15px">🔇</span>
+        <image-slot id="avatar" style="width:40px;height:40px" shape="circle" placeholder="You"></image-slot>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:20px">
+
+      <div class="card" style="grid-column:span 3;height:560px;display:flex;flex-direction:column">
+        <div style="padding:24px 24px 0">
+          <div style="font-size:15px;color:#9A9A9A">I am</div>
+          <div style="font-size:26px;font-weight:600;color:#fff">Zalak (Zecco)</div>
+        </div>
+        <div style="flex:1;margin-top:12px;position:relative">
+          <image-slot id="portrait" shape="rect" placeholder="Drop portrait / illustration" style="filter:grayscale(1)"></image-slot>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 24px;background:linear-gradient(0deg,rgba(22,22,22,0.96) 40%,transparent);font-size:13px;line-height:1.5;color:#C9C9C9">
+          Pixels, purpose, a decade of practice and AI didn't replace the craft. It sharpened it <a href="#">Learn more</a>.
+        </div>
+      </div>
+
+      <div class="card" style="grid-column:span 3;height:560px;padding:24px;display:flex;flex-direction:column">
+        <div class="label">🕐 Design Time Spent</div>
+        <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+          <div style="font-size:44px;font-weight:700;color:#fff;letter-spacing:-0.01em">25,467</div>
+          <div style="font-size:13px;color:#9A9A9A">Total Design Hours</div>
+        </div>
+        <div style="width:200px;height:100px;margin:0 auto;flex-shrink:0">
+          <svg viewBox="0 0 200 100" width="200" height="100">
+            <defs>
+              <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#FF3D5A"/>
+                <stop offset="25%" stop-color="#FF8A3D"/>
+                <stop offset="50%" stop-color="#FFD93D"/>
+                <stop offset="75%" stop-color="#6FE39A"/>
+                <stop offset="100%" stop-color="#3DB8FF"/>
+              </linearGradient>
+            </defs>
+            <path d="M10,95 A90,90 0 0 1 190,95" fill="none" stroke="url(#gaugeGrad)" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="100" cy="5" r="5" fill="#fff" stroke="rgba(255,255,255,0.2)" stroke-width="4"/>
+          </svg>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;flex-shrink:0">
+          <div style="font-size:22px;font-weight:700;color:#fff">2014<div style="font-size:10px;font-weight:400;color:#9A9A9A;letter-spacing:0.08em">AHMEDABAD</div></div>
+          <div style="text-align:right;font-size:22px;font-weight:700;color:#fff">2026<div style="font-size:10px;font-weight:400;color:#9A9A9A;letter-spacing:0.08em">CHICAGO</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column:span 6;height:560px;padding:24px;display:flex;flex-direction:column">
+        <div class="label" style="margin-bottom:14px">📊 Design Skill Matrix</div>
+        <div style="display:grid;grid-template-columns:1.1fr 1.1fr 0.7fr;gap:24px;flex:1;min-height:0">
+          <div>
+            <div style="font-size:11px;letter-spacing:0.1em;color:#6E6E6E;font-weight:600;margin-bottom:10px">SKILL</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">AI-Driven UX Strategy <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">97</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Human-AI Interaction Design <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">90</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">UX UI Design <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">88</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Vibe-Coding <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">94</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Data-Driven Design <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">92</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Prompt Engineering <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">86</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Cross-Functional Collaboration <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">93</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Innovation Strategy <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">96</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;letter-spacing:0.1em;color:#6E6E6E;font-weight:600;margin-bottom:10px">&nbsp;</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">User Research &amp; Insights <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">99</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">End-to-End Product Design <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">91</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Information Architecture <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">87</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Design Systems &amp; Scalable UI <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">88</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">AI-Assisted Prototyping <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">91</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Conversion Optimization <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">93</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#D9D9D9">Accessibility &amp; Inclusive Design <span style="background:#232323;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff">99</span></div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;letter-spacing:0.1em;color:#6E6E6E;font-weight:600;margin-bottom:10px">TOOL</div>
+            <div style="display:flex;flex-direction:column;gap:11px;font-size:13px;color:#D9D9D9">
+              <div>Claude Code</div><div>Google AI Studio</div><div>Cursor</div><div>GitHub Copilot</div><div>Figma</div><div>Adobe CS</div><div>Google Analytics</div><div>Microsoft Clarity</div>
+            </div>
+          </div>
+        </div>
+        <div style="height:90px;margin-top:8px;flex-shrink:0">
+          <image-slot id="flowers" shape="rect" placeholder="Drop decorative illustration (flowers)"></image-slot>
+        </div>
+      </div>
+
+      <div class="card dot-bg" style="grid-column:span 4;height:420px;padding:24px;display:flex;flex-direction:column">
+        <div class="label">📺 0 → 1</div>
+        <div style="font-size:28px;font-weight:700;color:#fff;margin-top:14px;max-width:280px;line-height:1.15">Craft + Judgement = Shipped.</div>
+        <div style="flex:1;position:relative;margin-top:12px">
+          <image-slot id="skyline" shape="rect" placeholder="Drop skyline / city image" style="position:absolute;inset:0"></image-slot>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column:span 4;height:420px;padding:24px;display:flex;flex-direction:column">
+        <div class="label">🎧 Podcast</div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center">
+          <div style="width:100%;background:#0f0f0f;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px">
+            <div style="text-align:center;background:#000;border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:8px 0;font-size:11px;letter-spacing:0.14em;color:#9A9A9A;margin-bottom:14px">THE ORDINARY DESIGNER</div>
+            <div style="display:flex;gap:14px;align-items:center">
+              <image-slot id="podcast-art" style="width:96px;height:96px;flex-shrink:0" shape="circle" placeholder="Cover art"></image-slot>
+              <div>
+                <div style="font-weight:600;font-size:16px;color:#fff;line-height:1.25">Blending UX with AI</div>
+                <div style="font-size:12px;color:#9A9A9A;margin-top:2px">Podcast</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:16px">
+              <span style="font-size:12px;color:#9A9A9A">00:00</span>
+              <div style="flex:1;height:2px;background:#2A2A2A;border-radius:2px"></div>
+              <span style="font-size:12px;color:#9A9A9A">06:53</span>
+              <span style="width:22px;height:22px;border-radius:50%;background:#1DB954;display:flex;align-items:center;justify-content:center;font-size:11px">♫</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column:span 4;height:420px;padding:24px;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="label">🌐 My Experience</div>
+          <a href="#" style="background:#111;border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:8px 16px;font-size:12px;color:#EDEDED;text-decoration:none">Download CV ↗</a>
+        </div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative">
+          <div style="width:260px;height:260px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #3a3a3a, #0a0a0a 70%);box-shadow:inset -20px -20px 60px rgba(0,0,0,0.6);position:relative">
+            <span style="position:absolute;top:30%;left:22%;width:6px;height:6px;border-radius:50%;background:#4C8DFF;box-shadow:0 0 8px 2px rgba(76,141,255,0.6)"></span>
+            <span style="position:absolute;top:44%;left:32%;width:6px;height:6px;border-radius:50%;background:#6FE39A;box-shadow:0 0 8px 2px rgba(111,227,154,0.6)"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;padding:28px 26px;border:1px solid rgba(255,255,255,0.08);border-radius:16px;background:#111">
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div style="font-size:14px;font-weight:600;color:#fff">Zalak Patel</div>
+        <div style="font-size:12px;color:#8B8B8B">zalak@zalak-patel.com &middot; Chicago, IL</div>
+      </div>
+      <a href="mailto:zalak@zalak-patel.com" style="background:#fff;color:#0a0a0a;text-decoration:none;font-weight:600;font-size:13px;padding:10px 20px;border-radius:100px">Get in touch</a>
+    </div>
+
+  </div>
+
+</div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  canvasRef = React.createRef();
+  state = { scale: 1, mobile: false, naturalH: 0 };
+
+  componentDidMount() {
+    this._onResize = () => this.measureAndScale();
+    window.addEventListener('resize', this._onResize);
+    this._tries = 0;
+    this._pollMeasure = () => {
+      const el = this.canvasRef.current;
+      if ((!el || !el.offsetHeight) && this._tries < 60) {
+        this._tries++;
+        requestAnimationFrame(this._pollMeasure);
+        return;
+      }
+      this.measureAndScale();
+    };
+    requestAnimationFrame(this._pollMeasure);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+  }
+  measureAndScale() {
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) { this.setState({ mobile: true, scale: 1 }); return; }
+    const el = this.canvasRef.current;
+    const naturalH = (el && el.offsetHeight) ? el.offsetHeight : this.state.naturalH;
+    const scale = naturalH ? Math.min(window.innerHeight / naturalH, 1.4) : 1;
+    this.setState({ mobile: false, naturalH, scale });
+  }
+
+  renderVals() {
+    const { mobile, scale, naturalH } = this.state;
+    const naturalW = 1600;
+
+    const outerStyle = mobile
+      ? { position: 'relative' }
+      : { height: '100vh', overflowX: 'auto', overflowY: 'hidden', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', background: '#0a0a0a' };
+
+    const wrapOuterStyle = mobile
+      ? { width: '100%' }
+      : { width: (naturalW * scale) + 'px', height: naturalH ? (naturalH * scale) + 'px' : 'auto', flexShrink: 0, position: 'relative' };
+
+    const canvasStyle = mobile
+      ? { width: '100%', minHeight: '100vh', background: '#0a0a0a', fontFamily: "'Space Grotesk',sans-serif", color: '#EDEDED', boxSizing: 'border-box', padding: '32px 40px 60px', position: 'relative' }
+      : { width: naturalW + 'px', transform: `scale(${scale})`, transformOrigin: 'top left', position: 'absolute', top: 0, left: 0, background: '#0a0a0a', fontFamily: "'Space Grotesk',sans-serif", color: '#EDEDED', boxSizing: 'border-box', padding: '32px 40px 60px' };
+
+    return { canvasRef: this.canvasRef, outerStyle, wrapOuterStyle, canvasStyle };
+  }
+}
+</script>
+</body>
+</html>

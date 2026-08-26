@@ -1,0 +1,33 @@
+# Zalak Patel
+
+> Zalak (Zecco) Patel is a product designer based in Chicago, Illinois, working at
+> the intersection of UX craft and AI. 25,467 hours of design practice since 2014.
+
+Contact: zalak@zalak-patel.com
+
+## Positioning
+
+- Operating principle: "Craft + Judgement = Shipped."
+- On AI: "Pixels, purpose, a decade of practice and AI didn't replace the craft. It sharpened it."
+- Practice arc: Ahmedabad, India (2014) → Chicago, Illinois (2026)
+
+## Focus areas
+
+AI-Driven UX Strategy, Human-AI Interaction Design, UX UI Design, Vibe-Coding,
+Data-Driven Design, Prompt Engineering, Cross-Functional Collaboration,
+Innovation Strategy, User Research & Insights, End-to-End Product Design,
+Information Architecture, Design Systems & Scalable UI, AI-Assisted Prototyping,
+Conversion Optimization, Accessibility & Inclusive Design.
+
+## Tools
+
+Claude Code, Google AI Studio, Cursor, GitHub Copilot, Figma, Adobe CS,
+Google Analytics, Microsoft Clarity.
+
+## Speaking
+
+- The Ordinary Designer — "Blending UX with AI" (6:53)
+
+## Pages
+
+- [Home](https://zalak-patel.com/): profile and skill matrix
