@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- ============================================================
+     CONFIGURE BEFORE DEPLOY
+     Canonical origin is assumed to be https://example.com
+     (derived from the contact address). If the site ships on a
+     different host, update it here, in sitemap.xml, robots.txt,
+     and llms.txt.
+     ============================================================ -->
+
+    <title>Muhammad Saud — Product Designer in Karachi | UI/UX &amp; Product Design</title>
+    <meta
+      name="description"
+      content="Muhammad Saud is a product designer at Avialdo Solutions in Karachi, building intuitive, visually compelling digital products across UX research, design systems, and end-to-end product design."
+    />
+    <link rel="canonical" href="https://example.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="author" content="Muhammad Saud" />
+    <meta name="theme-color" content="#0a0a0a" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Muhammad Saud" />
+    <meta property="og:title" content="Muhammad Saud — Product Designer in Karachi" />
+    <meta
+      property="og:description"
+      content="Product designer at Avialdo Solutions, Karachi. UX research, design systems, and end-to-end product design."
+    />
+    <meta property="og:url" content="https://example.com/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://example.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Muhammad Saud — Product Designer. Craft + Judgement = Shipped."
+    />
+    <meta property="profile:first_name" content="Muhammad" />
+    <meta property="profile:last_name" content="Maqsood" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Muhammad Saud — Product Designer in Karachi" />
+    <meta
+      name="twitter:description"
+      content="Product designer at Avialdo Solutions, Karachi. UX research, design systems, and end-to-end product design."
+    />
+    <meta name="twitter:image" content="https://example.com/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Muhammad Saud — Product Designer. Craft + Judgement = Shipped."
+    />
+
+    <!-- Icons & manifest -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- ============================================================
+     Structured data. Describes only what the page actually states.
+     Self-assessed proficiency scores are deliberately NOT emitted
+     as schema.org ratings — inventing review/rating markup for
+     one's own skills is a spam signal, not an SEO win.
+     ============================================================ -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "ProfilePage",
+            "@id": "https://example.com/#profilepage",
+            "url": "https://example.com/",
+            "name": "Muhammad Saud — Product Designer in Karachi",
+            "inLanguage": "en-US",
+            "isPartOf": { "@id": "https://example.com/#website" },
+            "mainEntity": { "@id": "https://example.com/#person" },
+            "primaryImageOfPage": "https://example.com/og-image.png"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://example.com/#website",
+            "url": "https://example.com/",
+            "name": "Muhammad Saud",
+            "inLanguage": "en-US",
+            "publisher": { "@id": "https://example.com/#person" }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://example.com/#person",
+            "name": "Muhammad Saud",
+            "alternateName": "Muhammad Saud Maqsood",
+            "jobTitle": "Product Designer",
+            "description": "Product designer at Avialdo Solutions in Karachi, creating intuitive, visually compelling digital products.",
+            "email": "mailto:saudmaqsood@icloud.com",
+            "url": "https://example.com/",
+            "sameAs": [
+              "https://www.linkedin.com/in/muhammadsaudmaqsood/",
+              "https://open.spotify.com/user/312tqjah72vxcwhro5yuewscrgla"
+            ],
+            "worksFor": {
+              "@type": "Organization",
+              "name": "Avialdo Solutions"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Karachi",
+              "addressRegion": "Sindh",
+              "addressCountry": "PK"
+            },
+            "knowsAbout": [
+              "AI-Driven UX Strategy",
+              "Human-AI Interaction Design",
+              "UX UI Design",
+              "Vibe-Coding",
+              "Data-Driven Design",
+              "Prompt Engineering",
+              "Cross-Functional Collaboration",
+              "Innovation Strategy",
+              "User Research & Insights",
+              "End-to-End Product Design",
+              "Information Architecture",
+              "Design Systems & Scalable UI",
+              "AI-Assisted Prototyping",
+              "Conversion Optimization",
+              "Accessibility & Inclusive Design"
+            ],
+            "knowsLanguage": "en",
+            "seeks": {
+              "@type": "Demand",
+              "name": "Product design and AI-driven UX engagements"
+            }
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <!-- ============================================================
+     TODO before deploy — every placeholder href below is "#".
+     Dead internal links waste crawl budget and dilute relevance.
+       · nav: Dashboard / Case Studies / AI  → real routes
+       · identity card: "Learn more"          → about page
+       · experience card: "Download CV"       → /muhammad-saud-cv.pdf
+     ============================================================ -->
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Interactive dot lattice, painted behind everything. -->
+    <div class="dot-grid" data-dot-grid aria-hidden="true"></div>
+
+    <div class="page">
+      <!-- ── Top bar ─────────────────────────────────────────────── -->
+      <header class="topbar">
+        <div class="segmented" role="group" aria-label="Output medium">
+          <button type="button" class="seg is-active" aria-pressed="true">2D</button>
+          <button type="button" class="seg" aria-pressed="false">3D</button>
+          <button type="button" class="seg" aria-pressed="false">VR</button>
+          <button type="button" class="seg" aria-pressed="false">AR</button>
+        </div>
+
+        <nav class="segmented" aria-label="Primary">
+          <a class="seg is-active is-focused" href="#" aria-current="page">Dashboard</a>
+          <a class="seg" href="#">Case Studies</a>
+          <a class="seg" href="#">AI</a>
+        </nav>
+
+        <div class="topbar__meta">
+          <span class="pill pill--stat" aria-label="Cursor speed">0 px/s</span>
+          <button type="button" class="icon-btn" aria-label="Unmute" aria-pressed="true">
+            <span aria-hidden="true">🔇</span>
+          </button>
+          <figure class="slot slot--circle slot--avatar" data-hint="You">
+            <!-- <img src="assets/avatar.jpg" alt="Muhammad Saud" width="40" height="40" loading="lazy" decoding="async"> -->
+          </figure>
+        </div>
+      </header>
+
+      <!-- ── Bento grid ──────────────────────────────────────────── -->
+      <main class="bento" id="main">
+        <!-- Identity -->
+        <section
+          class="card card--identity"
+          aria-labelledby="identity-name"
+          data-shine-top="224,231,255"
+          data-shine-bottom="129,140,248"
+        >
+          <figure class="slot slot--fill" data-hint="Drop portrait / illustration">
+            <img src="assets/portrait.png" alt="Portrait of Muhammad Saud" width="380" height="420" decoding="async">
+          </figure>
+
+          <div class="identity__head">
+            <p class="identity__kicker">I am</p>
+            <h1 class="identity__name" id="identity-name">Muhammad Saud</h1>
+          </div>
+
+          <div class="identity__social">
+            <a
+              class="identity__social-link identity__social-link--facebook"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" focusable="false">
+                <path
+                  d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                />
+              </svg>
+            </a>
+            <a
+              class="identity__social-link identity__social-link--linkedin"
+              href="https://www.linkedin.com/in/muhammadsaudmaqsood/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" focusable="false">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                />
+              </svg>
+            </a>
+            <a
+              class="identity__social-link identity__social-link--instagram"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" focusable="false">
+                <defs>
+                  <radialGradient
+                    id="instagram-gradient"
+                    cx="30%"
+                    cy="107%"
+                    r="150%"
+                  >
+                    <stop offset="0%" stop-color="#fdf497" />
+                    <stop offset="5%" stop-color="#fdf497" />
+                    <stop offset="45%" stop-color="#fd5949" />
+                    <stop offset="60%" stop-color="#d6249f" />
+                    <stop offset="90%" stop-color="#285AEB" />
+                  </radialGradient>
+                </defs>
+                <path
+                  fill="url(#instagram-gradient)"
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                />
+              </svg>
+            </a>
+            <a
+              class="identity__social-link identity__social-link--behance"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Behance"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" focusable="false">
+                <path
+                  d="M22 7.257h-6.83v-1.611h6.83v1.611zm1.352 4.865c.043.28.06.716.052 1.319H16.88c.033 1.014.373 1.734.972 2.166.373.276.815.414 1.34.414.55 0 .996-.164 1.336-.492.185-.178.35-.42.487-.734h2.777c-.074.649-.412 1.31-1.017 1.983-.94 1.061-2.263 1.593-3.964 1.593-1.402 0-2.641-.446-3.716-1.35-1.078-.9-1.615-2.365-1.615-4.394 0-1.902.487-3.361 1.463-4.379.976-1.017 2.244-1.527 3.802-1.527.925 0 1.756.166 2.494.499.738.333 1.348.858 1.827 1.578.436.634.717 1.371.847 2.211zM19.928 10.47c-.02-.68-.238-1.201-.658-1.564-.42-.363-.937-.545-1.556-.545-.674 0-1.194.191-1.564.573-.369.383-.6.895-.688 1.536h4.466zM8.982 16.828c.535 0 .955-.084 1.263-.253.542-.301.813-.822.813-1.564 0-.626-.259-1.078-.777-1.354-.293-.157-.716-.24-1.267-.253H4.958v3.424h4.024zm.174-5.573c.542-.04.94-.19 1.192-.457.24-.257.362-.611.362-1.061 0-.44-.121-.789-.362-1.05-.263-.28-.658-.42-1.187-.42H4.958v3.023h4.198zM2.243 6.43h5.978c1.372 0 2.454.311 3.245.933.79.622 1.185 1.532 1.185 2.729 0 .87-.211 1.577-.633 2.121-.246.317-.607.605-1.083.865.72.257 1.26.667 1.617 1.229.36.562.54 1.244.54 2.045 0 .82-.207 1.559-.622 2.218-.264.427-.594.786-.99 1.076-.446.331-.973.559-1.578.68-.605.122-1.262.183-1.968.183H2.243V6.43z"
+                />
+              </svg>
+            </a>
+            <a
+              class="identity__social-link identity__social-link--contra"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Contra"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" focusable="false">
+                <path d="M12 1.5 21 12l-9 10.5L3 12z" />
+              </svg>
+            </a>
+          </div>
+        </section>
+
+        <!-- Design time spent -->
+        <section class="card card--hours" aria-labelledby="hours-label">
+          <h2 class="label" id="hours-label">
+            <span class="label__icon" aria-hidden="true">🕐</span> Design Time Spent
+          </h2>
+
+          <p class="hours__figure">
+            <span class="hours__value">25,467</span>
+            <span class="hours__unit">Total Design Hours</span>
+          </p>
+
+          <div class="gauge">
+            <svg viewBox="0 0 200 100" role="img" aria-labelledby="gauge-title">
+              <title id="gauge-title">
+                Career arc from 2014 to 2026, currently at the midpoint
+              </title>
+              <defs>
+                <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#FF3D5A" />
+                  <stop offset="25%" stop-color="#FF8A3D" />
+                  <stop offset="50%" stop-color="#FFD93D" />
+                  <stop offset="75%" stop-color="#6FE39A" />
+                  <stop offset="100%" stop-color="#3DB8FF" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M10,95 A90,90 0 0 1 190,95"
+                fill="none"
+                stroke="url(#gaugeGrad)"
+                stroke-width="12"
+                stroke-linecap="round"
+              />
+              <circle
+                cx="100"
+                cy="5"
+                r="5"
+                fill="#fff"
+                stroke="rgba(255,255,255,0.2)"
+                stroke-width="4"
+              />
+            </svg>
+          </div>
+
+          <ol class="hours__endpoints">
+            <li class="endpoint">
+              <time class="endpoint__year" datetime="2014">2014</time>
+              <span class="endpoint__place">Ahmedabad</span>
+            </li>
+            <li class="endpoint endpoint--end">
+              <time class="endpoint__year" datetime="2026">2026</time>
+              <span class="endpoint__place">Karachi</span>
+            </li>
+          </ol>
+        </section>
+
+        <!-- Skill matrix -->
+        <section class="card card--matrix" aria-labelledby="matrix-label">
+          <h2 class="label" id="matrix-label">
+            <span class="label__icon" aria-hidden="true">📊</span> Design Skill Matrix
+          </h2>
+
+          <p class="sr-only">Scores are self-assessed proficiency out of 100.</p>
+
+          <div class="matrix">
+            <div class="matrix__col">
+              <h3 class="matrix__head" id="skill-head">Skill</h3>
+              <dl class="matrix__list" aria-labelledby="skill-head">
+                <div class="skill">
+                  <dt>AI-Driven UX Strategy</dt>
+                  <dd class="skill__score">97</dd>
+                </div>
+                <div class="skill">
+                  <dt>Human-AI Interaction Design</dt>
+                  <dd class="skill__score">90</dd>
+                </div>
+                <div class="skill">
+                  <dt>UX UI Design</dt>
+                  <dd class="skill__score">88</dd>
+                </div>
+                <div class="skill">
+                  <dt>Vibe-Coding</dt>
+                  <dd class="skill__score">94</dd>
+                </div>
+                <div class="skill">
+                  <dt>Data-Driven Design</dt>
+                  <dd class="skill__score">92</dd>
+                </div>
+                <div class="skill">
+                  <dt>Prompt Engineering</dt>
+                  <dd class="skill__score">86</dd>
+                </div>
+                <div class="skill">
+                  <dt>Cross-Functional Collaboration</dt>
+                  <dd class="skill__score">93</dd>
+                </div>
+                <div class="skill">
+                  <dt>Innovation Strategy</dt>
+                  <dd class="skill__score">96</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="matrix__col">
+              <h3 class="matrix__head matrix__head--spacer" id="skill-head-cont">
+                <span class="sr-only">Skill, continued</span><span aria-hidden="true">&nbsp;</span>
+              </h3>
+              <dl class="matrix__list" aria-labelledby="skill-head-cont">
+                <div class="skill">
+                  <dt>User Research &amp; Insights</dt>
+                  <dd class="skill__score">99</dd>
+                </div>
+                <div class="skill">
+                  <dt>End-to-End Product Design</dt>
+                  <dd class="skill__score">91</dd>
+                </div>
+                <div class="skill">
+                  <dt>Information Architecture</dt>
+                  <dd class="skill__score">87</dd>
+                </div>
+                <div class="skill">
+                  <dt>Design Systems &amp; Scalable UI</dt>
+                  <dd class="skill__score">88</dd>
+                </div>
+                <div class="skill">
+                  <dt>AI-Assisted Prototyping</dt>
+                  <dd class="skill__score">91</dd>
+                </div>
+                <div class="skill">
+                  <dt>Conversion Optimization</dt>
+                  <dd class="skill__score">93</dd>
+                </div>
+                <div class="skill">
+                  <dt>Accessibility &amp; Inclusive Design</dt>
+                  <dd class="skill__score">99</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="matrix__col">
+              <h3 class="matrix__head" id="tool-head">Tool</h3>
+              <ul class="matrix__list matrix__list--tools" aria-labelledby="tool-head">
+                <li>Claude Code</li>
+                <li>Google AI Studio</li>
+                <li>Cursor</li>
+                <li>GitHub Copilot</li>
+                <li>Figma</li>
+                <li>Adobe CS</li>
+                <li>Google Analytics</li>
+                <li>Microsoft Clarity</li>
+              </ul>
+            </div>
+          </div>
+
+          <figure class="slot slot--strip" data-hint="Drop decorative illustration (flowers)">
+            <!-- Decorative only — keep alt="" so assistive tech skips it.
+             <img src="assets/flowers.png" alt="" width="700" height="90" loading="lazy" decoding="async"> -->
+          </figure>
+        </section>
+
+        <!-- Tool marquee: same eight tools as the skill matrix's Tool
+             column, looping continuously so it reads as one strip between
+             the two card rows rather than a card of its own.
+
+             Icon accuracy note: Figma, Adobe, GitHub, Microsoft and
+             Google are traced from their real published marks. Claude
+             Code, Cursor, GitHub Copilot and Google AI Studio don't have
+             a brand glyph simple enough to trust from memory, so those
+             four are plain generic pictographs (sunburst / pointer /
+             goggles / sparkle) in the right brand colour rather than a
+             claimed likeness — swap in real SVGs for those four if you
+             have them. -->
+        <svg class="logo-marquee__sprite" aria-hidden="true" focusable="false">
+          <defs>
+            <symbol id="logo-claude" viewBox="0 0 24 24">
+              <g fill="currentColor">
+                <rect x="10.5" y="1" width="3" height="22" rx="1.5" />
+                <rect x="10.5" y="1" width="3" height="22" rx="1.5" transform="rotate(45 12 12)" />
+                <rect x="10.5" y="1" width="3" height="22" rx="1.5" transform="rotate(90 12 12)" />
+                <rect x="10.5" y="1" width="3" height="22" rx="1.5" transform="rotate(135 12 12)" />
+              </g>
+            </symbol>
+            <symbol id="logo-google" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.344-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.724 0-.788-.085-1.39-.189-1.99z"
+              />
+            </symbol>
+            <symbol id="logo-cursor" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M3 2l19 8-8 3-3 8z" />
+            </symbol>
+            <symbol id="logo-copilot" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+              />
+            </symbol>
+            <symbol id="logo-figma" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M8.5 24c1.933 0 3.5-1.567 3.5-3.5V17H8.5C6.567 17 5 18.567 5 20.5S6.567 24 8.5 24zM5 12.5C5 10.567 6.567 9 8.5 9H12v7H8.5C6.567 16 5 14.433 5 12.5zM5 4.5C5 2.567 6.567 1 8.5 1H12v7H8.5C6.567 8 5 6.433 5 4.5zM12 1h3.5C17.433 1 19 2.567 19 4.5S17.433 8 15.5 8H12zM19 12.5c0 1.933-1.567 3.5-3.5 3.5S12 14.433 12 12.5 13.567 9 15.5 9s3.5 1.567 3.5 3.5z"
+              />
+            </symbol>
+            <symbol id="logo-adobe" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M13.966 22.624l-1.69-4.281H8.122l3.892-9.144 5.662 13.425zM8.884 1.376H0v21.248zm15.116 0h-8.884L24 22.624V1.376z"
+              />
+            </symbol>
+            <symbol id="logo-analytics" viewBox="0 0 24 24">
+              <g fill="currentColor">
+                <rect x="3" y="13" width="4" height="8" rx="1" />
+                <rect x="10" y="7" width="4" height="14" rx="1" />
+                <rect x="17" y="2" width="4" height="19" rx="1" />
+              </g>
+            </symbol>
+            <symbol id="logo-microsoft" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M0 0h11.377v11.372H0zM12.623 0H24v11.372H12.623zM0 12.623h11.377V24H0zM12.623 12.623H24V24H12.623z"
+              />
+            </symbol>
+          </defs>
+        </svg>
+
+        <div class="logo-marquee" aria-label="Tools I use">
+          <div class="logo-marquee__track">
+            <span class="logo-marquee__item" data-brand="claude">
+              <svg class="logo-marquee__icon"><use href="#logo-claude" /></svg>
+              <span class="sr-only">Claude Code</span>
+            </span>
+            <span class="logo-marquee__item" data-brand="google">
+              <svg class="logo-marquee__icon"><use href="#logo-google" /></svg>
+              <span class="sr-only">Google AI Studio</span>
+            </span>
+            <span class="logo-marquee__item" data-brand="cursor">
+              <svg class="logo-marquee__icon"><use href="#logo-cursor" /></svg>
+              <span class="sr-only">Cursor</span>
+            </span>
+            <span class="logo-marquee__item" data-brand="copilot">
+              <svg class="logo-marquee__icon"><use href="#logo-copilot" /></svg>
+              <span class="sr-only">GitHub Copilot</span>
+            </span>
+            <span class="logo-marquee__item" data-brand="figma">
+              <svg class="logo-marquee__icon"><use href="#logo-figma" /></svg>
+              <span class="sr-only">Figma</span>
+            </span>
+            <span class="logo-marquee__item" data-brand="adobe">
+              <svg class="logo-marquee__icon"><use href="#logo-adobe" /></svg>
+              <span class="sr-only">Adobe CS</span>
+            </span>
+            <span class="logo-marquee__item" data-brand="google">
+              <svg class="logo-marquee__icon"><use href="#logo-analytics" /></svg>
+              <span class="sr-only">Google Analytics</span>
+            </span>
+            <span class="logo-marquee__item" data-brand="microsoft">
+              <svg class="logo-marquee__icon"><use href="#logo-microsoft" /></svg>
+              <span class="sr-only">Microsoft Clarity</span>
+            </span>
+            <span class="logo-marquee__item" data-brand="claude" aria-hidden="true">
+              <svg class="logo-marquee__icon"><use href="#logo-claude" /></svg>
+            </span>
+            <span class="logo-marquee__item" data-brand="google" aria-hidden="true">
+              <svg class="logo-marquee__icon"><use href="#logo-google" /></svg>
+            </span>
+            <span class="logo-marquee__item" data-brand="cursor" aria-hidden="true">
+              <svg class="logo-marquee__icon"><use href="#logo-cursor" /></svg>
+            </span>
+            <span class="logo-marquee__item" data-brand="copilot" aria-hidden="true">
+              <svg class="logo-marquee__icon"><use href="#logo-copilot" /></svg>
+            </span>
+            <span class="logo-marquee__item" data-brand="figma" aria-hidden="true">
+              <svg class="logo-marquee__icon"><use href="#logo-figma" /></svg>
+            </span>
+            <span class="logo-marquee__item" data-brand="adobe" aria-hidden="true">
+              <svg class="logo-marquee__icon"><use href="#logo-adobe" /></svg>
+            </span>
+            <span class="logo-marquee__item" data-brand="google" aria-hidden="true">
+              <svg class="logo-marquee__icon"><use href="#logo-analytics" /></svg>
+            </span>
+            <span class="logo-marquee__item" data-brand="microsoft" aria-hidden="true">
+              <svg class="logo-marquee__icon"><use href="#logo-microsoft" /></svg>
+            </span>
+          </div>
+        </div>
+
+        <!-- 0 → 1 -->
+        <section class="card--zero-one" aria-labelledby="zeroone-label">
+          <h2 class="sr-only" id="zeroone-label">0 → 1 — Craft + Judgement = Shipped.</h2>
+
+          <div class="stack" data-stack>
+            <!-- Timeline rail: one node per project, in the same order as
+             the cards beside it. Clicking a node runs the deck to that
+             project (card-stack.js) — the same `target` the wheel drives,
+             so a click and a scroll can never disagree about where the
+             deck is. Each node's .sr-only name is what assistive tech and
+             a no-JS visitor get; card-stack.js rewrites it from the
+             matching card's own title at init so the two can never drift.
+             The logo is the point of the rail: drop a file into each slot
+             and the dashed placeholder steps aside on its own (see the
+             .slot:has(img) rule in styles.css). -->
+            <ol class="stack__rail" data-stack-rail aria-label="Projects">
+              <li class="stack__rail-item">
+                <button class="stack-dot" type="button" data-stack-dot>
+                  <span class="slot slot--circle stack-dot__logo" data-hint="Logo">
+                    <!-- <img src="assets/project-one-logo.svg" alt="" width="36" height="36" loading="lazy" decoding="async"> -->
+                  </span>
+                  <span class="sr-only" data-stack-dot-label>Project One</span>
+                </button>
+              </li>
+              <li class="stack__rail-item">
+                <button class="stack-dot" type="button" data-stack-dot>
+                  <span class="slot slot--circle stack-dot__logo" data-hint="Logo">
+                    <!-- <img src="assets/project-two-logo.svg" alt="" width="36" height="36" loading="lazy" decoding="async"> -->
+                  </span>
+                  <span class="sr-only" data-stack-dot-label>Project Two</span>
+                </button>
+              </li>
+              <li class="stack__rail-item">
+                <button class="stack-dot" type="button" data-stack-dot>
+                  <span class="slot slot--circle stack-dot__logo" data-hint="Logo">
+                    <!-- <img src="assets/project-three-logo.svg" alt="" width="36" height="36" loading="lazy" decoding="async"> -->
+                  </span>
+                  <span class="sr-only" data-stack-dot-label>Project Three</span>
+                </button>
+              </li>
+            </ol>
+
+            <div class="stack__viewport" data-stack-viewport>
+              <article class="stack-card" data-stack-card>
+                <figure class="slot stack-card__image" data-hint="Drop project screenshot"></figure>
+                <div class="stack-card__footer">
+                  <div class="stack-card__text">
+                    <span class="stack-card__title" data-stack-title>Project One</span>
+                    <span class="stack-card__desc" data-stack-desc
+                      >Add a one-line project summary</span
+                    >
+                  </div>
+                  <a class="stack-card__cta btn-primary" href="#" data-stack-cta>
+                    Read
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="square"
+                      aria-hidden="true"
+                    >
+                      <path d="M9.5 18L15.5 12L9.5 6" />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+              <article class="stack-card" data-stack-card>
+                <figure class="slot stack-card__image" data-hint="Drop project screenshot"></figure>
+                <div class="stack-card__footer">
+                  <div class="stack-card__text">
+                    <span class="stack-card__title" data-stack-title>Project Two</span>
+                    <span class="stack-card__desc" data-stack-desc
+                      >Add a one-line project summary</span
+                    >
+                  </div>
+                  <a class="stack-card__cta btn-primary" href="#" data-stack-cta>
+                    Read
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="square"
+                      aria-hidden="true"
+                    >
+                      <path d="M9.5 18L15.5 12L9.5 6" />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+              <article class="stack-card" data-stack-card>
+                <figure class="slot stack-card__image" data-hint="Drop project screenshot"></figure>
+                <div class="stack-card__footer">
+                  <div class="stack-card__text">
+                    <span class="stack-card__title" data-stack-title>Project Three</span>
+                    <span class="stack-card__desc" data-stack-desc
+                      >Add a one-line project summary</span
+                    >
+                  </div>
+                  <a class="stack-card__cta btn-primary" href="#" data-stack-cta>
+                    Read
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="square"
+                      aria-hidden="true"
+                    >
+                      <path d="M9.5 18L15.5 12L9.5 6" />
+                    </svg>
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Listening -->
+        <section class="card card--podcast" aria-labelledby="listening-label">
+          <h2 class="label" id="listening-label">
+            <span class="label__icon label__icon--brand" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" focusable="false">
+                <path
+                  d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"
+                />
+              </svg>
+            </span>
+            On Repeat
+          </h2>
+
+          <div class="podcast">
+            <!-- Spotify only embeds track / album / artist / playlist / show / episode —
+             there is no embed for a user profile. This is the public playlist from
+             open.spotify.com/user/312tqjah72vxcwhro5yuewscrgla. To swap it, replace the
+             path segment and id with any other Spotify share link. -->
+            <div class="player__embed-box">
+              <!-- Playlist cover, straight from Spotify's oEmbed thumbnail. Decorative:
+               the playlist is named in the player below it. -->
+              <img
+                class="player__cover"
+                src="https://mosaic.scdn.co/640/ab67616d00001e024b02db5cefb177ff97346cf2ab67616d00001e02605a9b89d2501564757d349dab67616d00001e02f4471109aed9c86e627b12e2ab67616d00001e02fdf2e993e10e67396b3bf759"
+                alt=""
+                width="640"
+                height="640"
+                loading="lazy"
+                decoding="async"
+              />
+              <iframe
+                class="player__embed"
+                src="https://open.spotify.com/embed/playlist/42H88aJCZNCZbq9Uolo3Fw?utm_source=generator&amp;theme=0"
+                title="Spotify player: Own, a playlist by Muhammad Saud"
+                loading="lazy"
+                allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              ></iframe>
+            </div>
+          </div>
+        </section>
+
+        <!-- Experience -->
+        <section class="card card--experience" aria-labelledby="experience-label">
+          <div class="experience__head">
+            <h2 class="label" id="experience-label">
+              <span class="label__icon" aria-hidden="true">🌐</span> My Experience
+            </h2>
+            <a class="pill pill--action" href="#" download
+              >Download CV <span aria-hidden="true">↗</span></a
+            >
+          </div>
+
+          <div class="experience__body">
+            <!-- .flags is the real, crawlable content — the no-JS fallback.
+             world-connections.js hides it and mounts a dotted map + animated
+             connection paths in its place. -->
+            <div class="connections" data-connections>
+              <img class="connections__dots" alt="" />
+              <svg
+                class="connections__svg"
+                viewBox="0 0 800 400"
+                preserveAspectRatio="xMidYMid meet"
+              ></svg>
+              <ul class="flags">
+                <li class="flags__item">
+                  <span class="flags__flag" aria-hidden="true">🇵🇰</span>
+                  <span class="flags__label"
+                    ><strong>Pakistan</strong>Karachi<span class="sr-only"> — home base</span></span
+                  >
+                </li>
+                <li class="flags__item">
+                  <span class="flags__flag" aria-hidden="true">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>
+                  <span class="flags__label"><strong>Scotland</strong>Edinburgh</span>
+                </li>
+                <li class="flags__item">
+                  <span class="flags__flag" aria-hidden="true">🇬🇧</span>
+                  <span class="flags__label"><strong>United Kingdom</strong>London</span>
+                </li>
+                <li class="flags__item">
+                  <span class="flags__flag" aria-hidden="true">🇫🇷</span>
+                  <span class="flags__label"><strong>France</strong>Paris</span>
+                </li>
+                <li class="flags__item">
+                  <span class="flags__flag" aria-hidden="true">🇺🇸</span>
+                  <span class="flags__label"><strong>United States</strong>New York</span>
+                </li>
+                <li class="flags__item">
+                  <span class="flags__flag" aria-hidden="true">🇮🇩</span>
+                  <span class="flags__label"><strong>Indonesia</strong>Jakarta</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1809 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ============================================================
+   Design tokens — the site's own palette (unchanged from the
+   original styles.css) plus shadcn/ui's expected token names,
+   mapped onto that same palette so the Timeline component reads
+   as part of this UI instead of a default shadcn theme.
+   ============================================================ */
+
+:root {
+  /* surfaces */
+  --bg: #0a0a0a;
+  --surface: #161616;
+  --surface-sunk: #0f0f0f;
+  --surface-raised: #111;
+  --surface-chip: #232323;
+
+  /* lines */
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.12);
+  --line-soft: rgba(255, 255, 255, 0.08);
+
+  /* text */
+  --text: #ededed;
+  --text-hi: #fff;
+  --text-body: #d9d9d9;
+  --text-muted: #c9c9c9;
+  --text-dim: #9a9a9a;
+  --text-dimmer: #8b8b8b;
+  --text-faint: #6e6e6e;
+
+  /* accents */
+  --accent: #6f75ed;
+  --accent-gradient: linear-gradient(180deg, #464ce9 0%, #9a9df1 100%);
+  --focus: #4c8dff;
+  --green: #6fe39a;
+
+  /* geometry */
+  --r-card: 20px;
+  --r-panel: 18px;
+  --r-bar: 16px;
+  --r-pill: 100px;
+  --gap: 20px;
+  --pad-card: 24px;
+
+  --font: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: "Kalam", "Segoe Print", cursive;
+
+  color-scheme: dark;
+
+  /* shadcn/ui tokens, mapped onto the palette above */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface-raised);
+  --popover-foreground: var(--text);
+  --primary: var(--accent);
+  --primary-foreground: var(--bg);
+  --secondary: var(--surface-chip);
+  --secondary-foreground: var(--text);
+  --muted: var(--surface-sunk);
+  --muted-foreground: var(--text-dim);
+  --accent-shadcn: var(--surface-raised);
+  --accent-foreground: var(--text-hi);
+  --destructive: #ff3d5a;
+  --destructive-foreground: #fff;
+  --border: var(--line-strong);
+  --input: var(--line);
+  --ring: var(--focus);
+  --radius: 1rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent-shadcn);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+p,
+h1,
+h2,
+h3,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+figure {
+  margin: 0;
+}
+address {
+  font-style: normal;
+}
+
+a {
+  color: var(--accent);
+  transition: color 0.15s ease;
+}
+a:hover {
+  color: var(--text-hi);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ── Utilities ─────────────────────────────────────────────── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  transform: translateY(-120%);
+  padding: 10px 18px;
+  background: var(--text-hi);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom-right-radius: 10px;
+  transition: transform 0.15s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  color: var(--bg);
+}
+
+.page {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 32px 40px 60px;
+}
+
+/* ── Shared: cards, labels, pills ──────────────────────────── */
+
+.card {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: var(--pad-card);
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.label__icon {
+  font-size: 13px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.pill--stat {
+  padding: 12px 20px;
+}
+.pill--action {
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--text);
+  text-decoration: none;
+}
+.pill--action:hover {
+  border-color: var(--line-strong);
+  color: var(--text-hi);
+}
+
+.btn-primary {
+  background: var(--text-hi);
+  color: var(--bg);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  transition: opacity 0.15s ease;
+}
+.btn-primary:hover {
+  color: var(--bg);
+  opacity: 0.88;
+}
+
+/* ── Image slots ─────────────────────────────────────────────
+   Drop-in point for real imagery: uncomment the <img> inside a
+   .slot and the hint label steps aside automatically.
+   ──────────────────────────────────────────────────────────── */
+
+.slot {
+  position: relative;
+  overflow: hidden;
+  background: #1c1c1c;
+  border: 1px dashed var(--line-strong);
+  border-radius: 12px;
+}
+.slot::after {
+  content: attr(data-hint);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  font-size: 12px;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--text-faint);
+}
+.slot:has(img) {
+  border-style: solid;
+  border-color: transparent;
+}
+.slot:has(img)::after {
+  content: none;
+}
+
+.slot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slot--fill {
+  flex: 1;
+  min-height: 0;
+}
+.slot--circle {
+  border-radius: 50%;
+}
+.slot--avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+.slot--avatar::after {
+  font-size: 10px;
+}
+.slot--art {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+}
+.slot--art::after {
+  font-size: 10px;
+}
+.slot--grayscale img {
+  filter: grayscale(1);
+}
+
+/* ── Top bar ───────────────────────────────────────────────── */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.segmented {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+}
+
+.seg {
+  appearance: none;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text-dimmer);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+.seg:hover {
+  color: var(--text-hi);
+}
+
+.seg.is-active {
+  background: var(--text-hi);
+  color: var(--bg);
+  font-weight: 600;
+  padding: 8px 18px;
+}
+.seg.is-active:hover {
+  color: var(--bg);
+}
+
+.seg.is-active.is-focused {
+  padding: 8px 22px;
+  border: 2px solid var(--focus);
+}
+
+/* ── Start Designing CTA (dot/line frame, blueish hover) ── */
+
+.start-btn-wrapper {
+  --dot-size: 6px;
+  --line-weight: 1px;
+  --line-distance: 0.6rem 0.75rem;
+  --animation-speed: 0.35s;
+  --dot-color: rgba(255, 255, 255, 0.35);
+  --line-color: rgba(255, 255, 255, 0.22);
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: auto;
+  padding: var(--line-distance);
+  background-color: transparent;
+  transition: background-color 0.3s ease-in-out;
+  user-select: none;
+}
+
+.start-btn-wrapper:has(.start-btn:hover) {
+  animation: start-btn-bg-flash calc(var(--animation-speed) * 4) ease-in-out forwards;
+}
+@keyframes start-btn-bg-flash {
+  80% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: rgba(111, 117, 237, 0.16);
+  }
+}
+
+.start-btn {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 22px;
+  background-color: var(--surface-raised);
+  background-image: linear-gradient(#0000, rgba(0, 0, 0, 0.25));
+  border: none;
+
+  color: var(--text-hi);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  border-radius: var(--r-pill);
+  cursor: pointer;
+
+  box-shadow:
+    0 0 0 1px var(--line-strong),
+    0px 1px 1px rgba(3, 7, 18, 0.2),
+    0px 5px 4px rgba(3, 7, 18, 0.24),
+    0px 12px 9px rgba(3, 7, 18, 0.28),
+    0px 20px 15px rgba(3, 7, 18, 0.32);
+
+  transition:
+    background-color 0.2s ease-in-out,
+    background-image 0.2s ease-in-out,
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out,
+    border-radius 0.3s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+
+.start-btn:hover {
+  background-color: var(--accent);
+  background-image: var(--accent-gradient);
+  transform: scale(1.05);
+  border-radius: var(--r-pill);
+  box-shadow:
+    0 0 0 1px rgba(111, 117, 237, 0.6),
+    0px 1px 1px rgba(3, 7, 18, 0.2),
+    0px 5px 4px rgba(3, 7, 18, 0.24),
+    0px 12px 9px rgba(3, 7, 18, 0.28),
+    0px 20px 15px rgba(3, 7, 18, 0.32);
+}
+.start-btn:active {
+  background-color: var(--accent);
+  background-image: none;
+  transform: scale(0.98);
+  border-radius: var(--r-pill);
+}
+
+.start-btn-svg {
+  margin-left: 0.5rem;
+  height: 16px;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: var(--text-dim);
+  fill: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.start-btn:hover .start-btn-svg {
+  stroke: var(--text-hi);
+}
+.start-btn:active .start-btn-svg {
+  stroke: var(--text-hi);
+}
+
+/* Dots */
+.start-dot {
+  position: absolute;
+  width: var(--dot-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: var(--dot-color);
+  transition: all 0.3s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.start-btn-wrapper:has(.start-btn:hover) .start-dot.top.left {
+  top: 50%;
+  left: 20%;
+  animation: start-move-top-left var(--animation-speed) ease-in-out forwards;
+}
+@keyframes start-move-top-left {
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    top: calc(var(--dot-size) * -0.5);
+    left: calc(var(--dot-size) * -0.5);
+    opacity: 1;
+  }
+}
+.start-btn-wrapper:has(.start-btn:hover) .start-dot.top.right {
+  top: 50%;
+  right: 20%;
+  animation: start-move-top-right var(--animation-speed) ease-in-out forwards;
+  animation-delay: calc(var(--animation-speed) * 0.6);
+}
+@keyframes start-move-top-right {
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    top: calc(var(--dot-size) * -0.5);
+    right: calc(var(--dot-size) * -0.5);
+    opacity: 1;
+  }
+}
+.start-btn-wrapper:has(.start-btn:hover) .start-dot.bottom.right {
+  bottom: 50%;
+  right: 20%;
+  animation: start-move-bottom-right var(--animation-speed) ease-in-out forwards;
+  animation-delay: calc(var(--animation-speed) * 1.2);
+}
+@keyframes start-move-bottom-right {
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    bottom: calc(var(--dot-size) * -0.5);
+    right: calc(var(--dot-size) * -0.5);
+    opacity: 1;
+  }
+}
+.start-btn-wrapper:has(.start-btn:hover) .start-dot.bottom.left {
+  bottom: 50%;
+  left: 20%;
+  animation: start-move-bottom-left var(--animation-speed) ease-in-out forwards;
+  animation-delay: calc(var(--animation-speed) * 1.8);
+}
+@keyframes start-move-bottom-left {
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    bottom: calc(var(--dot-size) * -0.5);
+    left: calc(var(--dot-size) * -0.5);
+    opacity: 1;
+  }
+}
+
+/* Lines */
+.start-line {
+  position: absolute;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+}
+.start-line.horizontal {
+  height: var(--line-weight);
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #0000 0 calc(var(--line-weight) * 2),
+    var(--line-color) calc(var(--line-weight) * 2) calc(var(--line-weight) * 4)
+  );
+}
+.start-line.top {
+  top: calc(var(--line-weight) * -0.5);
+}
+.start-line.bottom {
+  bottom: calc(var(--line-weight) * -0.5);
+}
+.start-line.vertical {
+  width: var(--line-weight);
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    0deg,
+    #0000 0 calc(var(--line-weight) * 2),
+    var(--line-color) calc(var(--line-weight) * 2) calc(var(--line-weight) * 4)
+  );
+}
+.start-line.left {
+  left: calc(var(--line-weight) * -0.5);
+}
+.start-line.right {
+  right: calc(var(--line-weight) * -0.5);
+}
+
+.start-line.top {
+  transform-origin: top left;
+  transform: rotate(5deg) scaleX(0);
+}
+.start-btn-wrapper:has(.start-btn:hover) .start-line.top {
+  animation: start-draw-top var(--animation-speed) ease-in-out forwards;
+  animation-delay: calc(var(--animation-speed) * 0.8);
+}
+@keyframes start-draw-top {
+  100% {
+    transform: rotate(0deg) scaleX(1);
+  }
+}
+.start-line.bottom {
+  transform-origin: bottom right;
+  transform: rotate(5deg) scaleX(0);
+}
+.start-btn-wrapper:has(.start-btn:hover) .start-line.bottom {
+  animation: start-draw-bottom var(--animation-speed) ease-in-out forwards;
+  animation-delay: calc(var(--animation-speed) * 2);
+}
+@keyframes start-draw-bottom {
+  100% {
+    transform: rotate(0deg) scaleX(1);
+  }
+}
+
+.start-line.left {
+  transform-origin: bottom left;
+  transform: rotate(0deg) scaleY(0);
+}
+.start-btn-wrapper:has(.start-btn:hover) .start-line.left {
+  animation: start-draw-left var(--animation-speed) ease-in-out forwards;
+  animation-delay: calc(var(--animation-speed) * 2.4);
+}
+@keyframes start-draw-left {
+  100% {
+    transform: rotate(0deg) scaleY(1);
+  }
+}
+
+.start-line.right {
+  transform-origin: top right;
+  transform: rotate(5deg) scaleY(0);
+}
+.start-btn-wrapper:has(.start-btn:hover) .start-line.right {
+  animation: start-draw-right var(--animation-speed) ease-in-out forwards;
+  animation-delay: calc(var(--animation-speed) * 1.4);
+}
+@keyframes start-draw-right {
+  100% {
+    transform: rotate(0deg) scaleY(1);
+  }
+}
+
+.topbar__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 15px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+.icon-btn:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Bento grid ────────────────────────────────────────────── */
+
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gap);
+}
+
+.card--identity {
+  grid-column: span 3;
+  min-height: 560px;
+  padding: 0;
+}
+.card--hours {
+  grid-column: span 3;
+  min-height: 560px;
+  padding: 0;
+}
+.matrix-stack {
+  grid-column: span 6;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-height: 0;
+}
+.card--matrix {
+  flex: 1 1 auto;
+  min-height: 500px;
+}
+.card--tool-carousel {
+  flex: 0 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.card--zero-one {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  grid-column: span 5;
+  min-height: 560px;
+}
+.card--testimonials {
+  grid-column: span 3;
+  min-height: 560px;
+}
+
+@media (hover: hover) {
+  .card--identity.card::after {
+    background: radial-gradient(
+      260px circle at var(--shine-x, 50%) var(--shine-y, 50%),
+      rgb(var(--shine-r, 129) var(--shine-g, 140) var(--shine-b, 248)),
+      rgb(var(--shine-r, 129) var(--shine-g, 140) var(--shine-b, 248) / 0.5) 35%,
+      rgb(var(--shine-r, 129) var(--shine-g, 140) var(--shine-b, 248) / 0.16) 60%,
+      transparent 78%
+    );
+  }
+}
+.card--experience {
+  grid-column: span 4;
+  min-height: 560px;
+}
+
+/* ── Identity card ─────────────────────────────────────────── */
+
+.identity__head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  padding: var(--pad-card) var(--pad-card) 32px;
+}
+.identity__kicker {
+  font-size: 15px;
+  color: var(--text-dim);
+}
+.identity__name {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-hi);
+}
+.card--identity .slot--fill {
+  position: absolute;
+  inset: 0;
+  flex: none;
+  border-radius: inherit;
+  border: 0;
+}
+
+.identity__social {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+.identity__social-link {
+  --brand: var(--text-hi);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--brand);
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+.identity__social-link:hover {
+  transform: translateY(-2px);
+  opacity: 0.8;
+}
+
+.identity__social-link--facebook {
+  --brand: #1877f2;
+}
+.identity__social-link--linkedin {
+  --brand: #0a66c2;
+}
+.identity__social-link--instagram {
+  --brand: #d6249f;
+}
+.identity__social-link--behance {
+  --brand: #1769ff;
+}
+
+/* ── Design time spent ─────────────────────────────────────── */
+
+.hours__timeline-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin-top: 8px;
+}
+.hours__timeline {
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hours__timeline::-webkit-scrollbar {
+  display: none;
+}
+/* Blurred fade at the top/bottom edges signals there's more of the
+   timeline to scroll to; each one fades out once that edge is reached. */
+.hours__timeline-fade {
+  position: absolute;
+  left: 0;
+  right: 4px;
+  height: 44px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.hours__timeline-fade[data-visible='true'] {
+  opacity: 1;
+}
+.hours__timeline-fade--top {
+  top: 0;
+  mask-image: linear-gradient(to bottom, black, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+}
+.hours__timeline-fade--bottom {
+  bottom: 0;
+  mask-image: linear-gradient(to top, black, transparent);
+  -webkit-mask-image: linear-gradient(to top, black, transparent);
+}
+/* No card fill sits behind this text, so the dot grid can show
+   through — a background-matched glow knocks the dots out from
+   directly behind each glyph without adding a visible panel. */
+.hours__timeline .timeline__title,
+.hours__timeline .timeline__company,
+.hours__timeline .timeline__duration,
+.hours__timeline .timeline__description {
+  text-shadow:
+    0 0 1px var(--bg),
+    0 0 4px var(--bg),
+    0 0 8px var(--bg),
+    0 0 8px var(--bg);
+}
+.hours__timeline .timeline__title {
+  color: var(--text-hi);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.hours__timeline .timeline__company {
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--text-dim);
+  line-height: 1.35;
+}
+.hours__timeline .timeline__duration {
+  margin-top: 1px;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--text-dimmer);
+  line-height: 1.4;
+}
+.hours__timeline .timeline__description {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-faint);
+  line-height: 1.45;
+}
+.hours__timeline [data-status='completed'] .timeline__title {
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.hours__timeline [data-status='active'] .timeline__title {
+  color: var(--accent);
+  font-weight: 700;
+}
+.hours__timeline [data-status='active'] .rounded-full {
+  box-shadow: 0 0 0 4px rgba(70, 76, 233, 0.18);
+}
+
+/* ── Skill matrix ──────────────────────────────────────────── */
+
+.matrix {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  align-content: center;
+  gap: 28px;
+  flex: 1;
+  min-height: 0;
+}
+
+.matrix__dial {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  cursor: grab;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 42%, #000 58%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 42%, #000 58%, transparent);
+}
+.matrix__dial:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+.matrix__dial-item {
+  appearance: none;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  padding: 10px 4px;
+  cursor: pointer;
+  color: var(--text-faint);
+  font-size: 13px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: left center;
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.45s ease,
+    opacity 0.45s ease,
+    color 0.3s ease;
+  will-change: transform, filter, opacity;
+}
+.matrix__dial-item.is-active {
+  color: var(--text-hi);
+  font-weight: 600;
+  font-size: 15px;
+}
+.matrix__dial-item.is-active::before {
+  content: '→';
+  margin-right: 8px;
+  color: var(--accent);
+}
+.matrix__dial-item:focus-visible {
+  color: var(--text-hi);
+}
+
+.matrix__detail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* Sticky-note stack: five physical notes, ring-buffered by depth slot.
+   Each note keeps a stable identity (data-note id) and only slides
+   between the five fixed positions below — the "front note goes to
+   the bottom, next peeks up" shuffle the stack animates on every
+   active-skill change (see SkillMatrixCard's `step`/`slot` logic). */
+.matrix__notes {
+  position: relative;
+  width: clamp(260px, 24vw, 420px);
+  height: clamp(230px, 30vh, 380px);
+}
+
+.matrix__note {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 90%;
+  height: 88%;
+  padding: 20px 22px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--note-bg, #d6d6cf);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 27px,
+    var(--line-strong) 28px
+  );
+  background-position: 0 6px;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.15),
+    0 12px 22px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.55s ease;
+  will-change: transform;
+  overflow: hidden;
+}
+.matrix__note-tool {
+  display: inline-flex;
+  font-family: var(--font);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #55564f;
+}
+.matrix__note-text {
+  margin-top: 10px;
+  font-family: var(--font-hand);
+  font-size: 17px;
+  line-height: 24px;
+  color: #2c2c28;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matrix__note {
+    transition: none;
+  }
+}
+
+/* ── 0 → 1 ───────────────────────────────────────────────────
+   The whole card is the deck: three project cards peeking out of a
+   stack, scrubbed forward and back by scroll input (useCardStack)
+   while the card is on screen.
+   ──────────────────────────────────────────────────────────── */
+
+.stack {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 14px;
+}
+.stack__viewport {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ── Timeline rail (project deck) ──────────────────────────── */
+
+.stack__rail {
+  position: relative;
+  flex-shrink: 0;
+  width: 36px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.stack__rail::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 50%;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--line-soft);
+}
+.stack__rail-item {
+  position: relative;
+}
+
+.stack-dot {
+  display: block;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  opacity: 0.5;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+.stack-dot:hover {
+  opacity: 0.85;
+}
+.stack-dot.is-active {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.stack-dot__logo {
+  display: block;
+  width: 36px;
+  height: 36px;
+  background: var(--surface-sunk);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.stack-dot__logo::after {
+  font-size: 9px;
+  padding: 2px;
+}
+.stack-dot__logo img {
+  object-fit: contain;
+}
+.stack-dot.is-active .stack-dot__logo {
+  border-color: var(--line-strong);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 0 14px rgba(255, 255, 255, 0.1);
+}
+.stack-dot.is-active .stack-dot__logo:has(img) {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+.stack-card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 84%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 6px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-panel);
+  will-change: transform, filter;
+}
+.stack-card__image {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  border-radius: 12px;
+}
+.stack-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 6px 4px;
+}
+.stack-card__text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stack-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-hi);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stack-card__desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stack-card__cta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 14px;
+}
+
+/* ── Testimonials ──────────────────────────────────────────── */
+
+/* The card itself is the testimonial — no title bar, no nested
+   panel. Swapping to the next one replaces .testimonial wholesale
+   (a fresh key each time), which is what lets the fade-in play. */
+.testimonial {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  min-height: 0;
+  animation: testimonial-in 0.5s ease;
+}
+
+@keyframes testimonial-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.testimonial__quote {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--text-hi);
+}
+
+.testimonial__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.testimonial__author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.testimonial__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-chip);
+  color: var(--text-hi);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.testimonial__name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-hi);
+}
+
+.testimonial__role {
+  display: block;
+  font-size: 12px;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.testimonial__logo {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+.testimonial__logo::after {
+  font-size: 8px;
+}
+
+.testimonials__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.testimonials__dot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--line-strong);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.testimonials__dot.is-active {
+  background: var(--accent);
+  transform: scale(1.35);
+}
+
+/* ── Experience / connections ──────────────────────────────── */
+
+.experience__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.experience__body {
+  position: relative;
+  flex: 1;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.flags {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 18px 26px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.flags__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.flags__flag {
+  font-size: 32px;
+  line-height: 1;
+}
+.flags__label {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-dim);
+}
+.flags__label strong {
+  color: var(--text-hi);
+  font-weight: 600;
+}
+
+.connections {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  margin-top: 24%;
+}
+.connections--live .flags {
+  display: none;
+}
+.connections__dots {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+.connections__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  z-index: 2;
+}
+.connections__path {
+  stroke-dasharray: 1;
+  animation: connections-draw 5s ease-in-out infinite;
+}
+.connections__traveler {
+  offset-rotate: 0deg;
+  animation: connections-travel 5s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .connections__path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .connections__traveler {
+    animation: none;
+    opacity: 0;
+  }
+}
+@keyframes connections-draw {
+  0%,
+  15% {
+    stroke-dashoffset: 1;
+  }
+  40%,
+  75% {
+    stroke-dashoffset: 0;
+  }
+  92%,
+  100% {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes connections-travel {
+  0%,
+  16% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  40%,
+  75% {
+    offset-distance: 100%;
+    opacity: 1;
+  }
+  88%,
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+.connections__label {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 10px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(2px, calc(var(--conn-w, 460px) * 0.0093), 4px)
+    clamp(4px, calc(var(--conn-w, 460px) * 0.0186), 8px);
+  white-space: nowrap;
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.7);
+  font-size: clamp(7.5px, calc(var(--conn-w, 460px) * 0.0233), 10px);
+  line-height: 1.3;
+  color: var(--text-dim);
+  pointer-events: none;
+}
+.connections__label strong {
+  font-size: clamp(8px, calc(var(--conn-w, 460px) * 0.0244), 10.5px);
+  font-weight: 600;
+  color: var(--text-hi);
+}
+.connections__label--home strong {
+  color: var(--focus);
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+
+@media (max-width: 1400px) {
+  :root {
+    --gap: 16px;
+  }
+  .page {
+    padding: 28px 28px 48px;
+  }
+  .matrix {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .bento {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .card--identity {
+    grid-column: span 3;
+  }
+  .card--hours {
+    grid-column: span 3;
+  }
+  .matrix-stack {
+    grid-column: span 6;
+  }
+  .card--zero-one {
+    grid-column: span 3;
+  }
+  .card--testimonials {
+    grid-column: span 3;
+  }
+  .card--experience {
+    grid-column: span 6;
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 980px) {
+  .topbar {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .topbar__meta {
+    margin-left: auto;
+  }
+
+  .bento {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card--identity,
+  .card--hours,
+  .card--zero-one,
+  .card--testimonials {
+    grid-column: span 1;
+  }
+  .matrix-stack,
+  .card--experience {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 680px) {
+  .page {
+    padding: 20px 16px 40px;
+  }
+
+  .topbar {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .topbar__meta {
+    width: 100%;
+    margin-left: 0;
+  }
+  .pill--stat {
+    padding: 10px 16px;
+  }
+
+  .bento {
+    grid-template-columns: 1fr;
+  }
+  .card--identity,
+  .card--hours,
+  .matrix-stack,
+  .card--zero-one,
+  .card--testimonials,
+  .card--experience {
+    grid-column: span 1;
+  }
+
+  .card--identity {
+    min-height: 480px;
+  }
+  .card--hours {
+    min-height: 460px;
+  }
+  .card--matrix,
+  .card--tool-carousel {
+    min-height: 0;
+  }
+  .card--zero-one {
+    min-height: 380px;
+  }
+  .card--testimonials,
+  .card--experience {
+    min-height: 0;
+  }
+
+  .matrix {
+    grid-template-columns: 1fr;
+    grid-template-rows: 220px minmax(0, 1fr);
+    gap: 16px;
+  }
+  .matrix__dial {
+    height: 220px;
+  }
+}
+
+@media (max-width: 420px) {
+  .connections__label {
+    padding: 2px 5px;
+    border-radius: 6px;
+    font-size: 7.5px;
+  }
+  .connections__label strong {
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ── Fit-to-viewport dashboard ─────────────────────────────────
+   Roomy screens get everything on one screen — top bar and both
+   bento rows — so no scrolling is needed to reach any card or
+   icon. Gated on >=1181px wide and >=700px tall; outside that the
+   normal scrolling layout takes over.
+   ──────────────────────────────────────────────────────────── */
+@media (min-width: 1181px) and (min-height: 700px) {
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+  /* Vite's #root wrapper sits between body and .page, which the
+     original static HTML didn't have — without an explicit height
+     here, .page's height:100% has no percentage base to resolve
+     against and silently falls back to auto. */
+  #root {
+    height: 100%;
+  }
+
+  .page {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(14px, 2.2vh, 32px) clamp(20px, 2.4vw, 40px);
+  }
+
+  .topbar {
+    flex-shrink: 0;
+    margin-bottom: clamp(10px, 1.8vh, 28px);
+  }
+
+  .bento {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1.18fr) minmax(0, 1fr);
+  }
+
+  .card {
+    padding: clamp(12px, 2vh, 24px);
+  }
+  .card--identity,
+  .card--hours,
+  .card--matrix,
+  .card--tool-carousel,
+  .card--zero-one,
+  .card--testimonials,
+  .card--experience {
+    min-height: 0;
+  }
+  .matrix-stack {
+    min-height: 0;
+  }
+  .card--identity,
+  .card--hours {
+    padding: 0;
+  }
+
+  .identity__head {
+    padding: clamp(14px, 2vh, 24px) clamp(14px, 2vh, 24px) clamp(20px, 3vh, 32px);
+  }
+  .identity__kicker {
+    font-size: clamp(13px, 1.7vh, 15px);
+  }
+  .identity__name {
+    font-size: clamp(20px, 2.7vh, 26px);
+  }
+  .identity__social {
+    bottom: clamp(14px, 2vh, 20px);
+    padding: clamp(10px, 1.6vh, 14px) clamp(14px, 2vh, 20px);
+  }
+
+  .hours__timeline-wrap {
+    margin-top: clamp(4px, 1vh, 8px);
+  }
+
+  .matrix {
+    flex: 1 1 auto;
+  }
+  .matrix__dial-item {
+    font-size: clamp(10.5px, 1.4vh, 13px);
+    padding: clamp(3px, 0.6vh, 10px) 4px;
+  }
+  .matrix__notes {
+    width: clamp(180px, 30vh, 260px);
+    height: clamp(140px, 22vh, 205px);
+  }
+  .matrix__note {
+    padding: clamp(10px, 1.6vh, 16px);
+  }
+  .matrix__note-text {
+    font-size: clamp(11.5px, 1.5vh, 14.5px);
+    line-height: clamp(16px, 1.9vh, 19px);
+  }
+
+  .slot--art {
+    width: clamp(44px, 7.4vh, 96px);
+    height: clamp(44px, 7.4vh, 96px);
+  }
+}
+
+/* ── Interactive dot lattice ───────────────────────────────────
+   Host layer for DotGridBackground, pinned behind the page. No
+   pointer events: the component tracks the cursor from window
+   level, so every dot reacts while clicks still land on the cards
+   underneath.
+   ──────────────────────────────────────────────────────────── */
+
+.dot-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.dot-grid__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Glass cards ───────────────────────────────────────────────
+   Frosted panels floating over the dot lattice: the blur softens the
+   dots behind each card into texture, and the fill stays dark enough
+   to hold body text over them.
+   ──────────────────────────────────────────────────────────── */
+
+.card {
+  background-color: rgba(18, 18, 18, 0.72);
+  border-color: rgba(255, 255, 255, 0.13);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(24px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 24px 48px -24px rgba(0, 0, 0, 0.7);
+}
+
+/* Design Time card sits directly on the background instead of
+   floating as a glass panel — no fill, border, or shadow. */
+.card--hours {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (hover: hover) {
+  .card--hours.card::after {
+    content: none;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    padding: 1px;
+    border-radius: inherit;
+    background: radial-gradient(
+      260px circle at var(--shine-x, 50%) var(--shine-y, 50%),
+      rgb(255, 255, 255),
+      rgba(255, 255, 255, 0.45) 35%,
+      rgba(255, 255, 255, 0.12) 60%,
+      transparent 78%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  .card:hover::after,
+  .card:focus-within::after {
+    opacity: 1;
+  }
+}

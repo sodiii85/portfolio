@@ -7,12 +7,13 @@
    become an init() that returns its own teardown.
 
    Three deliberate deviations:
-     · the click shockwave is bound to the host card, not window
-       — a click on the nav across the page firing a shockwave
-       inside a card reads as a bug, not an effect;
+     · the click shockwave binds to the host card when the field
+       lives inside one, and to window when it is a page-wide
+       layer (upstream always uses window, which fires shockwaves
+       in a card from clicks across the page);
      · the draw loop is gated on IntersectionObserver plus
-       document visibility, matching gradient-waves.js, so an
-       offscreen or backgrounded grid costs nothing;
+       document visibility, and skips frames where nothing moved,
+       so an idle field of a few thousand dots costs nothing;
      · prefers-reduced-motion draws the grid once and binds no
        listeners at all.
    ============================================================ */
@@ -177,9 +178,20 @@ export function initDotGrid(container, options = {}) {
   let raf = 0;
   let isVisible = true;
   let isPageVisible = !document.hidden;
+  let dirty = true;
+  let wasAnimating = false;
 
+  /* Full-page fields run into the thousands of dots, and a still frame is
+     identical to the one before it. Repaint only when the pointer moved
+     or a dot is off its lattice position — plus one last frame as the
+     final tween lands, so the settled state is what stays on screen. */
   const loop = () => {
-    draw();
+    const animating = dots.some((dot) => dot.xOffset !== 0 || dot.yOffset !== 0);
+    if (dirty || animating || wasAnimating) {
+      draw();
+      dirty = false;
+    }
+    wasAnimating = animating;
     raf = requestAnimationFrame(loop);
   };
   const tryStart = () => {
@@ -233,6 +245,7 @@ export function initDotGrid(container, options = {}) {
     const rect = canvas.getBoundingClientRect();
     pointer.x = event.clientX - rect.left;
     pointer.y = event.clientY - rect.top;
+    dirty = true;
 
     for (const dot of dots) {
       const dist = Math.hypot(dot.cx - pointer.x, dot.cy - pointer.y);
@@ -260,7 +273,9 @@ export function initDotGrid(container, options = {}) {
   };
 
   const throttledMove = throttle(onMove, 50);
-  const clickTarget = container.closest('.card') || container;
+  /* A page-wide layer is pointer-events: none, so it can never receive
+     the click itself — fall back to window. Inside a card, the card. */
+  const clickTarget = container.closest('.card') || window;
   window.addEventListener('pointermove', throttledMove, { passive: true });
   clickTarget.addEventListener('click', onClick);
 

@@ -1,15 +1,17 @@
-# Zalak Patel
+# Muhammad Saud
 
-> Zalak (Zecco) Patel is a product designer based in Chicago, Illinois, working at
-> the intersection of UX craft and AI. 25,467 hours of design practice since 2014.
+> Muhammad Saud (Muhammad Saud Maqsood) is a product designer at Avialdo Solutions in
+> Karachi, Pakistan, creating intuitive, visually compelling digital products across UX
+> research, design systems, and end-to-end product design.
 
-Contact: zalak@zalak-patel.com
+Contact: saudmaqsood@icloud.com
+LinkedIn: https://www.linkedin.com/in/muhammadsaudmaqsood/
 
 ## Positioning
 
 - Operating principle: "Craft + Judgement = Shipped."
 - On AI: "Pixels, purpose, a decade of practice and AI didn't replace the craft. It sharpened it."
-- Practice arc: Ahmedabad, India (2014) → Chicago, Illinois (2026)
+- Based in Karachi, Pakistan
 
 ## Focus areas
 
@@ -24,10 +26,11 @@ Conversion Optimization, Accessibility & Inclusive Design.
 Claude Code, Google AI Studio, Cursor, GitHub Copilot, Figma, Adobe CS,
 Google Analytics, Microsoft Clarity.
 
-## Speaking
+## Elsewhere
 
-- The Ordinary Designer — "Blending UX with AI" (6:53)
+- LinkedIn: https://www.linkedin.com/in/muhammadsaudmaqsood/
+- Spotify: https://open.spotify.com/user/312tqjah72vxcwhro5yuewscrgla
 
 ## Pages
 
-- [Home](https://zalak-patel.com/): profile and skill matrix
+- [Home](https://example.com/): profile and skill matrix
