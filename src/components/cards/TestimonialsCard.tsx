@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useCardShine } from '@/hooks/useCardShine';
+import { CompanyLogo } from '@/components/ui/company-logo';
 import { testimonials } from '@/data/testimonials';
 
 const AUTOPLAY_MS = 5000;
@@ -53,7 +54,9 @@ export function TestimonialsCard() {
             </span>
           </div>
 
-          <span className="slot slot--circle testimonial__logo" data-hint="Logo" />
+          <span className="slot slot--circle testimonial__logo" data-hint="Logo">
+            <CompanyLogo company={testimonial.company} size={68} />
+          </span>
           <span className="sr-only">{testimonial.project}</span>
         </div>
       </div>

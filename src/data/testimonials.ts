@@ -3,8 +3,10 @@ export interface Testimonial {
   quote: string;
   name: string;
   role: string;
-  /** The project this testimonial is about — labels the logo slot. */
+  /** The project this testimonial is about. */
   project: string;
+  /** Company name — resolved to a logo via Logo.dev in the logo slot. */
+  company: string;
 }
 
 /** Placeholder quotes — swap in real client / colleague testimonials. */
@@ -16,6 +18,7 @@ export const testimonials: Testimonial[] = [
     name: 'Aisha Raza',
     role: 'Product Manager, Avialdo Solutions',
     project: 'Project One',
+    company: 'Avialdo Solutions',
   },
   {
     id: 'client-2',
@@ -24,6 +27,7 @@ export const testimonials: Testimonial[] = [
     name: 'Daniyal Farooq',
     role: 'Engineering Lead, Burtix',
     project: 'Project Two',
+    company: 'Burtix',
   },
   {
     id: 'client-3',
@@ -32,6 +36,7 @@ export const testimonials: Testimonial[] = [
     name: 'Emily Carter',
     role: 'Founder, Loopwork',
     project: 'Project Three',
+    company: 'Loopwork',
   },
   {
     id: 'client-4',
@@ -40,5 +45,6 @@ export const testimonials: Testimonial[] = [
     name: 'Hassan Ali',
     role: 'Design Director, TRG',
     project: 'Project One',
+    company: 'TRG The Royal Group',
   },
 ];
