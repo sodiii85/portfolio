@@ -1,11 +1,17 @@
 export interface StackProject {
   title: string;
   description: string;
-  href: string;
+  /** Case study slug — the card's CTA links to /case-studies/:slug.
+      Order here also drives the case study page's previous/next links. */
+  slug: string;
 }
 
 export const stackProjects: StackProject[] = [
-  { title: 'Project One', description: 'Add a one-line project summary', href: '#' },
-  { title: 'Project Two', description: 'Add a one-line project summary', href: '#' },
-  { title: 'Project Three', description: 'Add a one-line project summary', href: '#' },
+  {
+    title: 'The Pocket Protector',
+    description: 'AI-assisted Medicare plan selection, 1 hour → 10 minutes',
+    slug: 'pocket-protector',
+  },
+  { title: 'Z Fit', description: 'Add a one-line project summary', slug: 'z-fit' },
+  { title: 'Live Portfolio', description: 'Add a one-line project summary', slug: 'live-portfolio' },
 ];

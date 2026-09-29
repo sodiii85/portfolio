@@ -5,10 +5,24 @@ import { skillDetails } from '@/data/matrix';
 const RADIUS_X = 460;
 const RADIUS_Y = 300;
 const ANGLE_STEP = 8;
-const VISIBLE_RANGE = 4;
+const COUNT = skillDetails.length;
+// The wrap in circularOffset only ever produces |diff| <= COUNT / 2, so
+// this is the natural ceiling — past it every item is already showing.
+const VISIBLE_RANGE = Math.floor(COUNT / 2);
 const BASE_SHIFT = 36;
 const WHEEL_STEP = 46;
-const COUNT = skillDetails.length;
+// Both the dial and its skeleton copies are shorter than 2 * RADIUS_Y in
+// most layouts (the grid row is sized by the detail column's content, not
+// by the arc's reach), so the outer items were landing outside the box
+// and getting hard-clipped by overflow: hidden instead of fading out.
+// Scale the vertical radius to whatever height is actually rendered,
+// leaving room for the mask's fade so the edge is a fade, not a cut.
+const RADIUS_Y_FADE_BUFFER = 28;
+
+function fittedRadiusY(containerHeight: number) {
+  if (!containerHeight) return RADIUS_Y;
+  return Math.max(60, Math.min(RADIUS_Y, containerHeight / 2 - RADIUS_Y_FADE_BUFFER));
+}
 
 function circularOffset(index: number, active: number) {
   let diff = (((index - active) % COUNT) + COUNT) % COUNT;
@@ -33,6 +47,34 @@ const SLOT_STYLE = [
   { x: -16, y: -16, rotate: -6, scale: 0.84, opacity: 0.88 },
 ];
 
+/* Decorative, non-interactive copies of the real dial — same arc math
+   (offset, angleDeg, arcX/arcY) as the live matrix__dial-item buttons
+   below, just rendered as static blackish bars instead of text, and
+   repeated side by side to fill the card as background texture. */
+const GHOST_WHEEL_COUNT = 6;
+const GHOST_OFFSETS = Array.from({ length: VISIBLE_RANGE * 2 + 1 }, (_, i) => i - VISIBLE_RANGE);
+
+function ghostWidth(offset: number) {
+  if (offset === 0) return 0.84;
+  const wave = Math.sin(offset * 1.7 + 2.1);
+  return 0.42 + ((wave + 1) / 2) * 0.4;
+}
+
+function ghostBarStyle(offset: number, radiusY: number): CSSProperties {
+  const distance = Math.abs(offset);
+  const angleDeg = offset * ANGLE_STEP;
+  const rad = (angleDeg * Math.PI) / 180;
+  const arcX = RADIUS_X * (1 - Math.cos(rad));
+  const arcY = radiusY * Math.sin(rad);
+
+  return {
+    width: `${ghostWidth(offset) * 100}%`,
+    height: offset === 0 ? 18 : 13,
+    transform: `translateY(-50%) translate(${BASE_SHIFT - arcX}px, ${arcY}px) rotate(${angleDeg}deg)`,
+    opacity: offset === 0 ? 0.9 : Math.max(0.35, 0.7 - distance * 0.045),
+  };
+}
+
 interface NoteStack {
   step: number;
   skills: number[];
@@ -49,9 +91,31 @@ export function SkillMatrixCard() {
   const cardRef = useRef<HTMLElement>(null);
   useCardShine(cardRef);
   const dialRef = useRef<HTMLDivElement>(null);
+  const skeletonRef = useRef<HTMLDivElement>(null);
   const wheelAccum = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const active = skillDetails[activeIndex];
+
+  const [dialHeight, setDialHeight] = useState(0);
+  const [skeletonHeight, setSkeletonHeight] = useState(0);
+  const dialRadiusY = fittedRadiusY(dialHeight);
+  const skeletonRadiusY = fittedRadiusY(skeletonHeight);
+
+  useEffect(() => {
+    const dial = dialRef.current;
+    const skeleton = skeletonRef.current;
+    if (!dial || !skeleton) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target === dial) setDialHeight(entry.contentRect.height);
+        if (entry.target === skeleton) setSkeletonHeight(entry.contentRect.height);
+      }
+    });
+    observer.observe(dial);
+    observer.observe(skeleton);
+    return () => observer.disconnect();
+  }, []);
 
   const [noteStack, setNoteStack] = useState<NoteStack>(initNoteStack);
   const prevActiveRef = useRef(activeIndex);
@@ -90,6 +154,22 @@ export function SkillMatrixCard() {
     <section ref={cardRef} className="card card--matrix" aria-label="Design Skill Matrix">
       <p className="sr-only">Scroll the dial, or use the arrow keys, to preview each skill&apos;s tooling.</p>
 
+      <div className="matrix__skeleton" ref={skeletonRef} aria-hidden="true">
+        <div className="matrix__skeleton-fade">
+          {Array.from({ length: GHOST_WHEEL_COUNT }, (_, wheelIndex) => (
+            <div className="matrix__skeleton-wheel" key={wheelIndex}>
+              {GHOST_OFFSETS.map((offset) => (
+                <span
+                  key={offset}
+                  className="matrix__skeleton-bar"
+                  style={ghostBarStyle(offset, skeletonRadiusY)}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="matrix">
         <div
           className="matrix__dial"
@@ -116,8 +196,10 @@ export function SkillMatrixCard() {
             const angleDeg = offset * ANGLE_STEP;
             const rad = (angleDeg * Math.PI) / 180;
             const arcX = RADIUS_X * (1 - Math.cos(rad));
-            const arcY = RADIUS_Y * Math.sin(rad);
-            const blur = Math.min(distance * 1.6, 7);
+            const arcY = dialRadiusY * Math.sin(rad);
+            // Stay crisp for most of the sweep — only the last couple of
+            // items before the corner pick up any blur.
+            const blur = distance >= VISIBLE_RANGE - 1 ? (distance - (VISIBLE_RANGE - 2)) * 3 : 0;
 
             return (
               <button
@@ -129,7 +211,7 @@ export function SkillMatrixCard() {
                 style={{
                   transform: `translateY(-50%) translate(${BASE_SHIFT - arcX}px, ${arcY}px) rotate(${angleDeg}deg)`,
                   filter: isActive ? 'none' : `blur(${blur}px)`,
-                  opacity: isVisible ? 1 - distance * 0.2 : 0,
+                  opacity: isVisible ? 1 - distance * 0.06 : 0,
                   pointerEvents: isVisible ? 'auto' : 'none',
                   zIndex: 100 - distance,
                 }}

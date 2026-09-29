@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useCardStack } from '@/hooks/useCardStack';
 import { stackProjects } from '@/data/stack';
+import { Link, caseStudyPath } from '@/lib/router';
 
 function ArrowIcon() {
   return (
@@ -30,23 +31,6 @@ export function ProjectStackCard() {
       </h2>
 
       <div className="stack" ref={stackRef} data-stack>
-        {/* Timeline rail: one node per project, in the same order as the
-            cards beside it. Clicking a node runs the deck to that project
-            (useCardStack) — the same `target` the wheel drives, so a click
-            and a scroll can never disagree about where the deck is. */}
-        <ol className="stack__rail" data-stack-rail aria-label="Projects">
-          {stackProjects.map((project) => (
-            <li className="stack__rail-item" key={project.title}>
-              <button className="stack-dot" type="button" data-stack-dot>
-                <span className="slot slot--circle stack-dot__logo" data-hint="Logo" />
-                <span className="sr-only" data-stack-dot-label>
-                  {project.title}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ol>
-
         <div className="stack__viewport" data-stack-viewport>
           {stackProjects.map((project) => (
             <article className="stack-card" data-stack-card key={project.title}>
@@ -60,10 +44,14 @@ export function ProjectStackCard() {
                     {project.description}
                   </span>
                 </div>
-                <a className="stack-card__cta btn-primary" href={project.href} data-stack-cta>
-                  Read
+                <Link
+                  className="stack-card__cta btn-primary"
+                  href={caseStudyPath(project.slug)}
+                  data-stack-cta
+                >
+                  View case study
                   <ArrowIcon />
-                </a>
+                </Link>
               </div>
             </article>
           ))}

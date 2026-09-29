@@ -41,11 +41,15 @@ export function useCardStack(rootRef: RefObject<HTMLElement | null>) {
     const content = cards.map((card) => ({
       title: card.querySelector('[data-stack-title]')!.textContent ?? '',
       description: card.querySelector('[data-stack-desc]')!.textContent ?? '',
+      href: card.querySelector('[data-stack-cta]')?.getAttribute('href') ?? '#',
     }));
 
-    const applyContent = (card: HTMLElement, entry: { title: string; description: string }) => {
+    // The CTA's href travels with the title — otherwise a recycled card
+    // would show one project and link to another's case study.
+    const applyContent = (card: HTMLElement, entry: (typeof content)[number]) => {
       card.querySelector('[data-stack-title]')!.textContent = entry.title;
       card.querySelector('[data-stack-desc]')!.textContent = entry.description;
+      card.querySelector('[data-stack-cta]')?.setAttribute('href', entry.href);
     };
 
     const dots = Array.from(root.querySelectorAll<HTMLElement>('[data-stack-dot]'));

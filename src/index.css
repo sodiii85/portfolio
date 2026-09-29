@@ -15,6 +15,7 @@
   --surface-sunk: #0f0f0f;
   --surface-raised: #111;
   --surface-chip: #232323;
+  --tag-bg: #1b1b1b;
 
   /* lines */
   --line: rgba(255, 255, 255, 0.07);
@@ -117,6 +118,9 @@ body {
   font-size: 16px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+  /* the lanyard's canvas reaches past its cell; let it run off-screen
+     instead of adding a horizontal scrollbar */
+  overflow-x: clip;
 }
 
 p,
@@ -694,10 +698,8 @@ a:hover {
   min-height: 560px;
   padding: 0;
 }
-.card--hours {
-  grid-column: span 3;
-  min-height: 560px;
-  padding: 0;
+.stack-skills-row {
+  display: contents;
 }
 .matrix-stack {
   grid-column: span 6;
@@ -725,83 +727,174 @@ a:hover {
   min-height: 560px;
 }
 .card--testimonials {
-  grid-column: span 3;
+  grid-column: 1 / -1;
   min-height: 560px;
 }
 
-@media (hover: hover) {
-  .card--identity.card::after {
-    background: radial-gradient(
-      260px circle at var(--shine-x, 50%) var(--shine-y, 50%),
-      rgb(var(--shine-r, 129) var(--shine-g, 140) var(--shine-b, 248)),
-      rgb(var(--shine-r, 129) var(--shine-g, 140) var(--shine-b, 248) / 0.5) 35%,
-      rgb(var(--shine-r, 129) var(--shine-g, 140) var(--shine-b, 248) / 0.16) 60%,
-      transparent 78%
-    );
+/* Bottom section: Toolkit orbit, Testimonials, Experience. Below 1181px
+   each is its own full-width row; at desktop widths they sit side by
+   side — the orbit at the identity column's width, the other two
+   splitting the rest evenly. */
+.bottom-stack {
+  display: contents;
+}
+
+/* At the widest breakpoint the stacked deck sits beside the skills
+   column instead of the timeline card that used to live there, so
+   the two share that row's width evenly. */
+@media (min-width: 1181px) {
+  .stack-skills-row {
+    display: flex;
+    grid-column: span 9;
+    gap: var(--gap);
+    min-height: 0;
+  }
+  .stack-skills-row > .card--zero-one {
+    flex: 1.6;
+    min-width: 0;
+  }
+  .stack-skills-row > .matrix-stack {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .bottom-stack {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: var(--gap);
+    min-height: 0;
+  }
+  .bottom-stack > .card--experience,
+  .bottom-stack > .card--testimonials {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  /* Same width as the identity column above it: 3 of the 12 grid
+     columns plus the two gaps they span. */
+  .bottom-stack > .card--tool-orbit {
+    flex: 0 0 calc((100% - 11 * var(--gap)) * 3 / 12 + 2 * var(--gap));
+    min-width: 0;
+    /* Take the row's height from Testimonials/Experience instead of
+       forcing the row taller. */
+    min-height: 0;
   }
 }
+
 .card--experience {
-  grid-column: span 4;
+  grid-column: 1 / -1;
   min-height: 560px;
 }
 
 /* ── Identity card ─────────────────────────────────────────── */
 
-.identity__head {
+/* No .card here on purpose: .card clips its content, and the lanyard
+   strap must run up past this cell and off the top of the page, while a
+   dragged badge stays free to swing past the cell's edges. */
+.identity-lanyard-host {
+  position: relative;
+}
+
+/* Reaches 600px above the cell (LANYARD_OVERHANG in IdentityCard.tsx)
+   so the strap has room to run off the top of the page; the badge
+   settles exactly over the cell. */
+.identity-lanyard {
   position: absolute;
-  top: 0;
+  top: -600px;
   left: 0;
   right: 0;
-  z-index: 1;
-  padding: var(--pad-card) var(--pad-card) 32px;
+  bottom: 0;
+  z-index: 2;
 }
-.identity__kicker {
-  font-size: 15px;
+
+.lanyard-face {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: var(--surface);
+}
+.lanyard-face--front {
+  overflow: hidden;
+}
+.lanyard-face__portrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.lanyard-face__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(10, 10, 10, 0.85) 100%);
+}
+.lanyard-face__text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 16px;
+}
+.lanyard-face__kicker {
+  font-size: 11px;
   color: var(--text-dim);
 }
-.identity__name {
-  font-size: 26px;
+.lanyard-face__name {
+  font-size: 17px;
   font-weight: 600;
   line-height: 1.2;
   color: var(--text-hi);
 }
-.card--identity .slot--fill {
-  position: absolute;
-  inset: 0;
-  flex: none;
-  border-radius: inherit;
-  border: 0;
+.lanyard-face--back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  padding: 16px;
+  background: var(--accent-gradient);
+}
+.lanyard-face--back .lanyard-face__kicker {
+  color: rgba(255, 255, 255, 0.75);
+}
+.lanyard-face--back .lanyard-face__name {
+  color: #fff;
+}
+.lanyard-face--back .lanyard-face__meta {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .identity__social {
-  position: absolute;
-  left: 50%;
-  bottom: 20px;
-  transform: translateX(-50%);
-  z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 20px;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 8px 12px;
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
 }
 .identity__social-link {
   --brand: var(--text-hi);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
   color: var(--brand);
   transition:
     transform 0.15s ease,
     opacity 0.15s ease;
+}
+.identity__social-link svg {
+  width: 100%;
+  height: 100%;
 }
 .identity__social-link:hover {
   transform: translateY(-2px);
@@ -821,106 +914,49 @@ a:hover {
   --brand: #1769ff;
 }
 
-/* ── Design time spent ─────────────────────────────────────── */
-
-.hours__timeline-wrap {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  margin-top: 8px;
-}
-.hours__timeline {
-  height: 100%;
-  overflow-y: auto;
-  padding-right: 4px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.hours__timeline::-webkit-scrollbar {
-  display: none;
-}
-/* Blurred fade at the top/bottom edges signals there's more of the
-   timeline to scroll to; each one fades out once that edge is reached. */
-.hours__timeline-fade {
-  position: absolute;
-  left: 0;
-  right: 4px;
-  height: 44px;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-.hours__timeline-fade[data-visible='true'] {
-  opacity: 1;
-}
-.hours__timeline-fade--top {
-  top: 0;
-  mask-image: linear-gradient(to bottom, black, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, black, transparent);
-}
-.hours__timeline-fade--bottom {
-  bottom: 0;
-  mask-image: linear-gradient(to top, black, transparent);
-  -webkit-mask-image: linear-gradient(to top, black, transparent);
-}
-/* No card fill sits behind this text, so the dot grid can show
-   through — a background-matched glow knocks the dots out from
-   directly behind each glyph without adding a visible panel. */
-.hours__timeline .timeline__title,
-.hours__timeline .timeline__company,
-.hours__timeline .timeline__duration,
-.hours__timeline .timeline__description {
-  text-shadow:
-    0 0 1px var(--bg),
-    0 0 4px var(--bg),
-    0 0 8px var(--bg),
-    0 0 8px var(--bg);
-}
-.hours__timeline .timeline__title {
-  color: var(--text-hi);
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.3;
-}
-.hours__timeline .timeline__company {
-  margin-top: 2px;
-  font-size: 12.5px;
-  font-weight: 400;
-  color: var(--text-dim);
-  line-height: 1.35;
-}
-.hours__timeline .timeline__duration {
-  margin-top: 1px;
-  font-size: 11.5px;
-  font-weight: 400;
-  color: var(--text-dimmer);
-  line-height: 1.4;
-}
-.hours__timeline .timeline__description {
-  margin-top: 4px;
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--text-faint);
-  line-height: 1.45;
-}
-.hours__timeline [data-status='completed'] .timeline__title {
-  color: var(--text-dim);
-  font-weight: 600;
-}
-.hours__timeline [data-status='active'] .timeline__title {
-  color: var(--accent);
-  font-weight: 700;
-}
-.hours__timeline [data-status='active'] .rounded-full {
-  box-shadow: 0 0 0 4px rgba(70, 76, 233, 0.18);
-}
-
 /* ── Skill matrix ──────────────────────────────────────────── */
 
+/* Static copies of the real dial (see SkillMatrixCard's ghostBarStyle),
+   repeated side by side behind it as background texture. Purely
+   decorative — same curved layout, blackish skeleton bars, no motion. */
+.matrix__skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* Fades the whole layer in left-to-right (invisible at the left edge,
+     full strength by the right edge) — nested so it multiplies with the
+     top/bottom fade below instead of fighting it in one mask-image. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 100%);
+  mask-image: linear-gradient(to right, transparent, #000 100%);
+}
+.matrix__skeleton-fade {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 6px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+}
+.matrix__skeleton-wheel {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.matrix__skeleton-bar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-radius: 6px;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transform-origin: left center;
+}
+
 .matrix {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 1.3fr 1fr;
   align-content: center;
@@ -934,8 +970,8 @@ a:hover {
   min-height: 0;
   overflow: hidden;
   cursor: grab;
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 42%, #000 58%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 42%, #000 58%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
 }
 .matrix__dial:focus-visible {
   outline: 2px solid var(--focus);
@@ -1053,6 +1089,151 @@ a:hover {
   }
 }
 
+/* ── Skill marquee ─────────────────────────────────────────────
+   Stand-in for the interactive dial (SkillMatrixCard, unrendered
+   for now — see App.tsx) — rows of skill names that scroll on their
+   own, alternating direction, filling the card's full height. Each
+   row's <ul> holds its skill list twice back-to-back so the
+   translateX(-50%) loop has no visible seam; --duration is set
+   per-row inline so rows drift out of sync with each other.
+   ──────────────────────────────────────────────────────────── */
+
+/* Lighter than the standard glass card (index.css's .card rule) —
+   almost no dark fill, just the blur, so the dot lattice reads
+   through it instead of sitting behind a solid panel. */
+.card--skill-marquee {
+  background: rgba(10, 10, 10, 0.16);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  backdrop-filter: blur(28px) saturate(140%);
+}
+
+.skill-marquee-head {
+  flex: 0 0 auto;
+  max-width: 46ch;
+}
+.skill-marquee-head__title {
+  margin-top: 10px;
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-hi);
+}
+.skill-marquee-head__desc {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.skill-marquee {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Rows stack from the bottom with the same gap as between pills;
+     any extra row overflows off the top, under the fade. */
+  justify-content: flex-end;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  /* pulled into the card's bottom padding so the last row also sits
+     12px from the card's edge */
+  margin: 20px calc(var(--pad-card) * -1) calc(12px - var(--pad-card));
+}
+/* Sits over the top couple of rows, right under the description, so
+   the deck reads as emerging from the text instead of starting sharp
+   at a hard edge. */
+.skill-marquee__fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg, #101010 0%, rgba(16, 16, 16, 0.7) 100%);
+  -webkit-backdrop-filter: blur(10  px);
+  backdrop-filter: blur(7px);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
+  mask-image: linear-gradient(to bottom, #000, transparent);
+}
+.skill-marquee__row {
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.skill-marquee__track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  animation: skill-marquee-scroll var(--duration, 32s) linear infinite;
+}
+.skill-marquee__row[data-direction='right'] .skill-marquee__track {
+  animation-direction: reverse;
+}
+.skill-marquee__pill {
+  flex: 0 0 auto;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  background: var(--tag-bg);
+  border: 1px solid var(--line-strong);
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+@keyframes skill-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-marquee__track {
+    animation: none;
+  }
+}
+
+/* ── Tool orbit ────────────────────────────────────────────────
+   Full-width row: heading on top, orbiting tool rings rising out of
+   a particle globe that sits half below the card's bottom edge. */
+/* Doubled class so the small-screen `.card` padding rule further down
+   can't put the gutters back — the orbit runs to the card's left,
+   right and bottom edges; only the heading keeps the card's padding. */
+.card--tool-orbit {
+  grid-column: 1 / -1;
+  min-height: 560px;
+}
+.card.card--tool-orbit {
+  padding: 0;
+}
+.tool-orbit-head {
+  padding: var(--pad-card) var(--pad-card) 0;
+}
+.tool-orbit-head__title {
+  margin-top: 8px;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-hi);
+}
+.tool-orbit-head__desc {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+.tool-orbit {
+  flex: 1;
+  min-height: 280px;
+  margin-top: 8px;
+}
+
 /* ── 0 → 1 ───────────────────────────────────────────────────
    The whole card is the deck: three project cards peeking out of a
    stack, scrubbed forward and back by scroll input (useCardStack)
@@ -1063,7 +1244,6 @@ a:hover {
   flex: 1;
   min-height: 0;
   display: flex;
-  gap: 14px;
 }
 .stack__viewport {
   position: relative;
@@ -1073,78 +1253,6 @@ a:hover {
   overflow: hidden;
 }
 
-/* ── Timeline rail (project deck) ──────────────────────────── */
-
-.stack__rail {
-  position: relative;
-  flex-shrink: 0;
-  width: 36px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-}
-.stack__rail::before {
-  content: "";
-  position: absolute;
-  top: 18px;
-  bottom: 18px;
-  left: 50%;
-  width: 1px;
-  margin-left: -0.5px;
-  background: var(--line-soft);
-}
-.stack__rail-item {
-  position: relative;
-}
-
-.stack-dot {
-  display: block;
-  padding: 0;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  opacity: 0.5;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
-.stack-dot:hover {
-  opacity: 0.85;
-}
-.stack-dot.is-active {
-  opacity: 1;
-  transform: scale(1.08);
-}
-
-.stack-dot__logo {
-  display: block;
-  width: 36px;
-  height: 36px;
-  background: var(--surface-sunk);
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-.stack-dot__logo::after {
-  font-size: 9px;
-  padding: 2px;
-}
-.stack-dot__logo img {
-  object-fit: contain;
-}
-.stack-dot.is-active .stack-dot__logo {
-  border-color: var(--line-strong);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.14),
-    0 0 14px rgba(255, 255, 255, 0.1);
-}
-.stack-dot.is-active .stack-dot__logo:has(img) {
-  border-color: rgba(255, 255, 255, 0.22);
-}
 .stack-card {
   position: absolute;
   left: 0;
@@ -1204,74 +1312,156 @@ a:hover {
 
 /* ── Testimonials ──────────────────────────────────────────── */
 
-/* The card itself is the testimonial — no title bar, no nested
-   panel. Swapping to the next one replaces .testimonial wholesale
-   (a fresh key each time), which is what lets the fade-in play. */
-.testimonial {
-  flex: 1;
+/* A field of equal-size cards, larger than the card that shows it.
+   One cell is centered, lit up as the testimonial; its neighbours are
+   flat, solid skeletons that peek in from every edge. Moving to the
+   next testimonial pans the whole field one cell along a clockwise
+   loop, so every skeleton slides with it, the old testimonial dims
+   into a skeleton as it leaves, and the one arriving lights up. */
+
+.card--testimonials {
+  background-color: #0c0c0d;
+}
+
+/* Fills the card edge to edge (not just its padded content box), so
+   the cq units below measure exactly the area the field is seen in. */
+.tstage {
+  --skel-gap: 12px;
+  --peek-x: clamp(34px, 8cqw, 120px);
+  --peek-y: clamp(30px, 9cqh, 80px);
+  --cell-w: calc(100cqw - 2 * (var(--peek-x) + var(--skel-gap)));
+  --cell-h: calc(100cqh - 2 * (var(--peek-y) + var(--skel-gap)));
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.tworld {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--world), var(--cell-w));
+  grid-template-rows: repeat(var(--world), var(--cell-h));
+  gap: var(--skel-gap);
+  transform: translate(
+    calc(var(--peek-x) + var(--skel-gap) - var(--col) * (var(--cell-w) + var(--skel-gap))),
+    calc(var(--peek-y) + var(--skel-gap) - var(--row) * (var(--cell-h) + var(--skel-gap)))
+  );
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+.tworld__cell {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  padding: clamp(18px, 3vh, 36px) clamp(20px, 3vw, 44px);
+  background: color-mix(in srgb, var(--tag-bg) 80%, transparent);
+  border: 1px solid transparent;
+  border-radius: 22px;
+  overflow: hidden;
+  transition:
+    background-color 0.5s ease,
+    border-color 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+/* The fade belongs to the viewport, not the cells: every cell is a
+   solid skeleton and the stage darkens its own edges over the peek
+   zones, so as the field pans, cards slide under the fade as one
+   piece — the leaving testimonial fills in as a solid card while it
+   dims, the arriving one emerges out of the edge and lights up. */
+.tstage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  --fade-x: calc(var(--peek-x) + var(--skel-gap));
+  --fade-y: calc(var(--peek-y) + var(--skel-gap));
+  --stage-bg: #0c0c0d;
+  background:
+    linear-gradient(to right, var(--stage-bg), transparent var(--fade-x)),
+    linear-gradient(to left, var(--stage-bg), transparent var(--fade-x)),
+    linear-gradient(to bottom, var(--stage-bg), transparent var(--fade-y)),
+    linear-gradient(to top, var(--stage-bg), transparent var(--fade-y));
+  pointer-events: none;
+}
+
+.tworld__cell.is-active {
+  background: #161618;
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 0 0 5px rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 30px 60px -20px rgba(0, 0, 0, 0.8);
+  transition-delay: 0.45s;
+}
+
+/* Content leaves quickly as its cell starts to move away, and only
+   fades in once the new cell has (nearly) settled in the center. */
+.tworld__cell .testimonial-card__body {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+.tworld__cell.is-active .testimonial-card__body {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.45s ease 0.6s,
+    transform 0.45s ease 0.6s;
+}
+
+.testimonial-card__body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 20px;
+  gap: clamp(12px, 2.4vh, 24px);
+  height: 100%;
   min-height: 0;
-  animation: testimonial-in 0.5s ease;
 }
 
-@keyframes testimonial-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.testimonial__quote {
-  margin: 0;
-  font-size: 17px;
-  line-height: 1.55;
-  color: var(--text-hi);
-}
-
-.testimonial__footer {
+.testimonial-card__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-}
-
-.testimonial__author {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   min-width: 0;
+  flex-shrink: 0;
 }
 
-.testimonial__avatar {
+.testimonial-card__avatar {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: clamp(36px, 5vh, 48px);
+  height: clamp(36px, 5vh, 48px);
   border-radius: 50%;
-  background: var(--surface-chip);
+  background: #2e2e33;
   color: var(--text-hi);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 
-.testimonial__name {
-  display: block;
-  font-size: 13px;
+.testimonial-card__meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.testimonial-card__name {
+  font-size: 15px;
   font-weight: 600;
   color: var(--text-hi);
 }
 
-.testimonial__role {
-  display: block;
+.testimonial-card__role {
   font-size: 12px;
   color: var(--text-dim);
   overflow: hidden;
@@ -1279,39 +1469,70 @@ a:hover {
   white-space: nowrap;
 }
 
-.testimonial__logo {
-  width: 34px;
-  height: 34px;
+.testimonial-card__logo {
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
 }
-.testimonial__logo::after {
-  font-size: 8px;
+.testimonial-card__logo::after {
+  font-size: 7px;
 }
 
-.testimonials__dots {
+.testimonial-card__quote {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-size: clamp(13px, min(2vh, 3.4cqw), 18px);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--text-hi);
+  overflow: hidden;
+}
+
+.testimonial-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  padding-right: 52px;
+}
+
+.testimonial-card__stars {
+  display: inline-flex;
+  gap: 3px;
+  color: #f2b53d;
+}
+
+.testimonial-card__date {
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.testimonials__next {
+  position: absolute;
+  right: calc(var(--peek-x) + var(--skel-gap) + clamp(18px, 3vh, 36px));
+  bottom: calc(var(--peek-y) + var(--skel-gap) + clamp(14px, 2.6vh, 32px));
+  z-index: 4;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding-top: 12px;
-}
-
-.testimonials__dot {
-  width: 6px;
-  height: 6px;
+  width: 30px;
+  height: 30px;
   padding: 0;
+  color: var(--bg);
+  background: var(--text-hi);
   border: 0;
   border-radius: 50%;
-  background: var(--line-strong);
   cursor: pointer;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
+  transition: opacity 0.15s ease;
 }
-
-.testimonials__dot.is-active {
-  background: var(--accent);
-  transform: scale(1.35);
+.testimonials__next:hover {
+  opacity: 0.85;
 }
 
 /* ── Experience / connections ──────────────────────────────── */
@@ -1371,7 +1592,7 @@ a:hover {
   position: relative;
   width: 100%;
   aspect-ratio: 2 / 1;
-  margin-top: 24%;
+  margin-top: 32%;
 }
 .connections--live .flags {
   display: none;
@@ -1496,20 +1717,13 @@ a:hover {
   .card--identity {
     grid-column: span 3;
   }
-  .card--hours {
-    grid-column: span 3;
-  }
   .matrix-stack {
     grid-column: span 6;
   }
   .card--zero-one {
     grid-column: span 3;
   }
-  .card--testimonials {
-    grid-column: span 3;
-  }
   .card--experience {
-    grid-column: span 6;
     min-height: 360px;
   }
 }
@@ -1527,13 +1741,10 @@ a:hover {
     grid-template-columns: repeat(2, 1fr);
   }
   .card--identity,
-  .card--hours,
-  .card--zero-one,
-  .card--testimonials {
+  .card--zero-one {
     grid-column: span 1;
   }
-  .matrix-stack,
-  .card--experience {
+  .matrix-stack {
     grid-column: span 2;
   }
 }
@@ -1556,22 +1767,16 @@ a:hover {
   }
 
   .bento {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .card--identity,
-  .card--hours,
   .matrix-stack,
-  .card--zero-one,
-  .card--testimonials,
-  .card--experience {
+  .card--zero-one {
     grid-column: span 1;
   }
 
   .card--identity {
     min-height: 480px;
-  }
-  .card--hours {
-    min-height: 460px;
   }
   .card--matrix,
   .card--tool-carousel {
@@ -1580,9 +1785,11 @@ a:hover {
   .card--zero-one {
     min-height: 380px;
   }
-  .card--testimonials,
   .card--experience {
     min-height: 0;
+  }
+  .card--testimonials {
+    min-height: 520px;
   }
 
   .matrix {
@@ -1653,14 +1860,14 @@ a:hover {
   .bento {
     flex: 1;
     min-height: 0;
-    grid-template-rows: minmax(0, 1.18fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1.05fr);
   }
 
   .card {
-    padding: clamp(12px, 2vh, 24px);
+    --pad-card: clamp(12px, 2vh, 24px);
+    padding: var(--pad-card);
   }
   .card--identity,
-  .card--hours,
   .card--matrix,
   .card--tool-carousel,
   .card--zero-one,
@@ -1671,8 +1878,7 @@ a:hover {
   .matrix-stack {
     min-height: 0;
   }
-  .card--identity,
-  .card--hours {
+  .card--identity {
     padding: 0;
   }
 
@@ -1688,10 +1894,6 @@ a:hover {
   .identity__social {
     bottom: clamp(14px, 2vh, 20px);
     padding: clamp(10px, 1.6vh, 14px) clamp(14px, 2vh, 20px);
-  }
-
-  .hours__timeline-wrap {
-    margin-top: clamp(4px, 1vh, 8px);
   }
 
   .matrix {
@@ -1760,21 +1962,7 @@ a:hover {
     0 24px 48px -24px rgba(0, 0, 0, 0.7);
 }
 
-/* Design Time card sits directly on the background instead of
-   floating as a glass panel — no fill, border, or shadow. */
-.card--hours {
-  background: none;
-  border-color: transparent;
-  box-shadow: none;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-
 @media (hover: hover) {
-  .card--hours.card::after {
-    content: none;
-  }
-
   .card::after {
     content: "";
     position: absolute;
@@ -1805,5 +1993,692 @@ a:hover {
   .card:hover::after,
   .card:focus-within::after {
     opacity: 1;
+  }
+}
+
+/* ── Case study page ───────────────────────────────────────────
+   Long-form project write-up (pages/CaseStudyPage.tsx). Reuses the
+   dashboard's glass .card, .label and .segmented pieces; everything
+   below is layout plus a few case-study-only widgets (dot meters,
+   palette chips, phone-screen galleries).
+   ──────────────────────────────────────────────────────────── */
+
+/* The dashboard pins the document to one screen at >=1181×700;
+   the case study scrolls like a normal page. App.tsx toggles the
+   class on <html> per route. */
+@media (min-width: 1181px) and (min-height: 700px) {
+  html.is-scroll-page,
+  html.is-scroll-page body,
+  html.is-scroll-page #root,
+  html.is-scroll-page .page {
+    height: auto;
+    overflow: visible;
+  }
+  html.is-scroll-page body {
+    overflow-x: clip;
+  }
+  html.is-scroll-page .page {
+    display: block;
+    padding: 32px 40px 60px;
+  }
+  html.is-scroll-page .topbar {
+    margin-bottom: 28px;
+  }
+  html.is-scroll-page .card {
+    --pad-card: 24px;
+  }
+}
+
+.page--case {
+  max-width: 1400px;
+}
+
+.cs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+/* header: back link on the left, title centred on the page */
+.cs-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.cs-back {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+}
+.cs-back:hover {
+  color: var(--text-hi);
+}
+.cs-header__title {
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-hi);
+  text-align: center;
+}
+
+/* shared type */
+.cs-card {
+  gap: 16px;
+}
+.cs-heading {
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-hi);
+}
+.cs-heading--sm {
+  font-size: 16px;
+}
+.cs-body {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.cs-section-title {
+  font-size: clamp(20px, 1.8vw, 24px);
+  font-weight: 700;
+  color: var(--text-hi);
+}
+
+/* rows */
+.cs-row {
+  display: grid;
+  gap: var(--gap);
+}
+.cs-row--intro,
+.cs-row--brand,
+.cs-row--closing {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.cs-row--research {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+
+/* tabs — the dashboard's segmented control at a smaller size */
+.cs-tabs {
+  align-self: flex-start;
+  flex-wrap: wrap;
+  padding: 4px;
+}
+.cs-tabs .seg {
+  padding: 6px 14px;
+  font-size: 12px;
+}
+.cs-tabs .seg.is-active {
+  padding: 6px 16px;
+}
+
+/* overview */
+.cs-meta {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+}
+.cs-meta__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.cs-meta__row:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.cs-meta__row dt {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.cs-meta__row dd {
+  text-align: right;
+  color: var(--text-muted);
+}
+
+/* snapshot */
+.cs-snapshot__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+/* logo */
+.card.cs-logo {
+  padding: 6px;
+  min-height: 280px;
+}
+
+/* research */
+.cs-research__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  flex: 1;
+}
+.cs-stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+.cs-stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cs-stat__badge {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(111, 117, 237, 0.14);
+  border: 1px solid rgba(111, 117, 237, 0.35);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.cs-stat__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--text-dimmer);
+}
+.cs-stat__text strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-hi);
+}
+.cs-goals {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
+}
+.cs-goal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* insights */
+.cs-insights__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 28px;
+}
+.cs-insight {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cs-insight__value {
+  margin-top: 6px;
+  font-size: clamp(28px, 2.6vw, 38px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-hi);
+}
+.cs-insight__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.cs-insight__body {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-dimmer);
+}
+.cs-meter {
+  display: grid;
+  grid-template-columns: repeat(10, 6px);
+  gap: 3px;
+}
+.cs-meter__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+.cs-meter__dot.is-lit {
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(111, 117, 237, 0.55);
+}
+
+/* typography */
+.cs-type__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "glyphs glyphs"
+    "specimen weights";
+  gap: 16px 24px;
+  flex: 1;
+  color: var(--text-hi);
+}
+.cs-type__glyphs {
+  grid-area: glyphs;
+  justify-self: end;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
+.cs-type__specimen {
+  grid-area: specimen;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.cs-type__family {
+  font-size: 12px;
+  color: var(--text-dimmer);
+}
+.cs-type__aa {
+  font-size: clamp(72px, 7vw, 108px);
+  font-weight: 700;
+  line-height: 0.9;
+}
+.cs-type__weights {
+  grid-area: weights;
+  align-self: end;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+/* palette */
+.cs-palette__rows {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  flex: 1;
+}
+.cs-palette__row {
+  display: flex;
+  justify-content: center;
+}
+.cs-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  /* overlapping chips, as in a Figma palette sheet */
+  margin-left: -14px;
+}
+.cs-swatch:first-child {
+  margin-left: 0;
+}
+.cs-swatch__chip {
+  width: clamp(64px, 6vw, 88px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.8);
+}
+.cs-swatch__chip--outline {
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.12),
+    0 10px 24px -12px rgba(0, 0, 0, 0.8);
+}
+.cs-swatch code {
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--text-dimmer);
+}
+
+/* campaign banner — rendered in the project's own brand, not ours */
+.card.cs-banner {
+  padding: 6px;
+}
+.cs-banner__art {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px 20px 0;
+  border-radius: 14px;
+  background: #fff;
+  color: #1e293b;
+  text-align: center;
+  overflow: hidden;
+}
+.cs-banner__headline {
+  max-width: 22ch;
+  font-size: clamp(16px, 1.5vw, 20px);
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.cs-banner__highlight {
+  padding: 6px 16px;
+  border-radius: 10px;
+  background: #3cb014;
+  color: #fff;
+  font-size: clamp(15px, 1.4vw, 19px);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.cs-banner__browser {
+  width: 92%;
+  margin-top: 12px;
+  border: 2px solid #1e293b;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+}
+.cs-banner__chrome {
+  display: flex;
+  gap: 4px;
+  padding: 5px 8px;
+  background: #1e293b;
+}
+.cs-banner__chrome span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #fff;
+}
+.cs-banner__form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 12px 16px 16px;
+  background: #f4f6f8;
+}
+.cs-banner__input-label {
+  font-size: 10px;
+  color: #475569;
+}
+.cs-banner__input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 7px 12px;
+  border: 1.5px solid #1e293b;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.cs-banner__clear {
+  font-size: 16px;
+  font-weight: 400;
+}
+.cs-banner__progress {
+  width: 70%;
+  height: 5px;
+  margin: 4px auto 0;
+  border-radius: 4px;
+  background: #3cb014;
+}
+
+/* iterative process: galleries on the left, sticky notes on the right */
+.cs-process {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  gap: var(--gap);
+  align-items: start;
+  margin-top: 12px;
+}
+.cs-process__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-width: 0;
+}
+.cs-process__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.cs-process__head .cs-tabs {
+  align-self: center;
+}
+.cs-process__galleries {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+.cs-process__aside {
+  position: sticky;
+  top: 24px;
+  /* align the notes card with the first gallery, under the tab row */
+  margin-top: 56px;
+}
+
+.cs-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cs-gallery__title {
+  padding-left: 10px;
+  border-left: 2px solid var(--accent);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.cs-gallery__frame {
+  display: grid;
+  grid-template-columns: repeat(var(--screens), minmax(0, 1fr));
+  gap: clamp(8px, 1.2vw, 16px);
+  padding: clamp(16px, 2.4vw, 32px);
+  border-radius: 14px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--line);
+}
+.cs-gallery__frame--large {
+  grid-template-columns: repeat(var(--screens), minmax(0, 280px));
+  justify-content: center;
+  gap: clamp(16px, 4vw, 56px);
+  padding: clamp(20px, 4vw, 48px);
+}
+.cs-phone {
+  aspect-ratio: 9 / 19.5;
+  border-radius: 14px;
+}
+.cs-gallery__frame--large .cs-phone {
+  border-radius: 22px;
+}
+
+.cs-notes {
+  gap: 28px;
+}
+.cs-notes__group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.cs-notes__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-hi);
+}
+.cs-notes__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cs-notes__list li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+.cs-notes__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.cs-notes__list strong {
+  font-weight: 600;
+  color: var(--text-hi);
+}
+
+/* closing + empty state */
+.cs-closing {
+  gap: 10px;
+}
+.cs-empty {
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 280px;
+  justify-content: center;
+}
+.cs-empty__cta {
+  margin-top: 8px;
+}
+
+/* previous / next */
+.cs-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.cs-pager__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: var(--text);
+}
+.cs-pager__link--next {
+  text-align: right;
+}
+.cs-pager__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface-raised);
+  border: 1px solid var(--line-strong);
+  color: var(--text-dim);
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+.cs-pager__link:hover .cs-pager__icon {
+  background: var(--text-hi);
+  color: var(--bg);
+}
+.cs-pager__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cs-pager__kicker {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+}
+.cs-pager__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-hi);
+}
+
+@media (max-width: 1180px) {
+  .cs-row--intro,
+  .cs-row--brand {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .cs-logo,
+  .cs-banner {
+    grid-column: 1 / -1;
+  }
+  .card.cs-logo {
+    min-height: 220px;
+  }
+  .cs-row--research {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cs-process {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cs-process__aside {
+    position: static;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 780px) {
+  .cs-header {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+  .cs-header__title {
+    text-align: left;
+  }
+  .cs-row--intro,
+  .cs-row--brand,
+  .cs-row--closing,
+  .cs-research__grid,
+  .cs-insights__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cs-goals {
+    padding-left: 0;
+    padding-top: 20px;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  /* more than 3 screens: scroll the strip sideways instead of
+     shrinking phones to thumbnails */
+  .cs-gallery__frame {
+    grid-template-columns: repeat(var(--screens), minmax(120px, 1fr));
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  .cs-gallery__frame--large {
+    grid-template-columns: repeat(var(--screens), minmax(0, 1fr));
+    padding: 20px;
+  }
+  .cs-phone {
+    scroll-snap-align: start;
+  }
+  .cs-pager__name {
+    font-size: 13px;
   }
 }
