@@ -1,9 +1,13 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react';
 import { useCardShine } from '@/hooks/useCardShine';
 import { CompanyLogo } from '@/components/ui/company-logo';
 import { testimonials, type Testimonial } from '@/data/testimonials';
 
 const AUTOPLAY_MS = 4200;
+/** How far (px) a drag has to travel before letting go moves to another card. */
+const SWIPE_PX = 50;
+/** The field follows the pointer at this fraction of the drag, so it feels pulled rather than free. */
+const DRAG_FOLLOW = 0.35;
 
 /** Clockwise loop of grid cells the camera pans around: a 2x2 square
  * for up to four testimonials, the rim of a 3x3 block beyond that.
@@ -91,6 +95,8 @@ export function TestimonialsCard() {
 
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [drag, setDrag] = useState<{ x: number; y: number } | null>(null);
+  const dragStart = useRef<{ id: number; x: number; y: number } | null>(null);
   const count = testimonials.length;
 
   const ring = ringCells(count);
@@ -98,15 +104,61 @@ export function TestimonialsCard() {
   const slotOf = (cellIndex: number) => ring.findIndex(([c, r]) => c + r * worldSize === cellIndex);
   const [col, row] = ring[active % ring.length];
 
+  const stops = Math.min(count, ring.length);
+
   function advance() {
-    setActive((current) => (current + 1) % Math.min(count, ring.length));
+    setActive((current) => (current + 1) % stops);
   }
 
+  function retreat() {
+    setActive((current) => (current - 1 + stops) % stops);
+  }
+
+  // Restarts on every move, so a swipe or click always gets a full beat before autoplay.
   useEffect(() => {
-    if (paused) return;
+    if (paused || drag) return;
     const id = window.setInterval(advance, AUTOPLAY_MS);
     return () => window.clearInterval(id);
-  }, [paused, count]);
+  }, [paused, drag !== null, active, count]);
+
+  function onPointerDown(e: PointerEvent<HTMLDivElement>) {
+    if (e.button > 0 || (e.target as Element).closest('button')) return;
+    dragStart.current = { id: e.pointerId, x: e.clientX, y: e.clientY };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    setDrag({ x: 0, y: 0 });
+  }
+
+  function onPointerMove(e: PointerEvent<HTMLDivElement>) {
+    const start = dragStart.current;
+    if (!start || e.pointerId !== start.id) return;
+    setDrag({ x: e.clientX - start.x, y: e.clientY - start.y });
+  }
+
+  function onPointerUp(e: PointerEvent<HTMLDivElement>) {
+    const start = dragStart.current;
+    if (!start || e.pointerId !== start.id) return;
+    dragStart.current = null;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    setDrag(null);
+    if (e.type === 'pointercancel' || Math.hypot(dx, dy) < SWIPE_PX) return;
+
+    // Pulling the field one way brings the card on the other side into view,
+    // so pick whichever ring neighbour (next or previous) sits opposite the drag.
+    const [c, r] = ring[active];
+    const [nc, nr] = ring[(active + 1) % stops];
+    const [pc, pr] = ring[(active - 1 + stops) % stops];
+    const towardNext = -(dx * (nc - c) + dy * (nr - r));
+    const towardPrev = -(dx * (pc - c) + dy * (pr - r));
+    if (towardNext <= 0 && towardPrev <= 0) {
+      // neither neighbour is that way: left/up goes forward, right/down goes back
+      (Math.abs(dx) >= Math.abs(dy) ? dx : dy) < 0 ? advance() : retreat();
+    } else if (towardNext >= towardPrev) {
+      advance();
+    } else {
+      retreat();
+    }
+  }
 
   return (
     <section
@@ -117,10 +169,24 @@ export function TestimonialsCard() {
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
     >
-      <div className="tstage">
+      <div
+        className={`tstage${drag ? ' is-dragging' : ''}`}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
+      >
         <div
           className="tworld"
-          style={{ '--world': worldSize, '--col': col, '--row': row } as CSSProperties}
+          style={
+            {
+              '--world': worldSize,
+              '--col': col,
+              '--row': row,
+              '--drag-x': `${(drag?.x ?? 0) * DRAG_FOLLOW}px`,
+              '--drag-y': `${(drag?.y ?? 0) * DRAG_FOLLOW}px`,
+            } as CSSProperties
+          }
           aria-live="polite"
         >
           {Array.from({ length: worldSize * worldSize }, (_, cell) => {

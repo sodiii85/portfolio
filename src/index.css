@@ -1336,6 +1336,13 @@ a:hover {
   container-type: size;
   overflow: hidden;
   border-radius: inherit;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.tstage.is-dragging {
+  cursor: grabbing;
 }
 
 .tworld {
@@ -1347,11 +1354,16 @@ a:hover {
   grid-template-rows: repeat(var(--world), var(--cell-h));
   gap: var(--skel-gap);
   transform: translate(
-    calc(var(--peek-x) + var(--skel-gap) - var(--col) * (var(--cell-w) + var(--skel-gap))),
-    calc(var(--peek-y) + var(--skel-gap) - var(--row) * (var(--cell-h) + var(--skel-gap)))
+    calc(var(--peek-x) + var(--skel-gap) - var(--col) * (var(--cell-w) + var(--skel-gap)) + var(--drag-x, 0px)),
+    calc(var(--peek-y) + var(--skel-gap) - var(--row) * (var(--cell-h) + var(--skel-gap)) + var(--drag-y, 0px))
   );
   transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
   will-change: transform;
+}
+
+/* Follow the pointer directly while held; the pan eases in again on release. */
+.tstage.is-dragging .tworld {
+  transition: none;
 }
 
 .tworld__cell {

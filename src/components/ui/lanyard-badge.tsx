@@ -10,8 +10,7 @@ import * as React from "react"
  * CSS, so both faces can hold anything — pass `front` / `back`, or use the
  * built-in design and just change the words.
  *
- * Drag the card and the strap pulls taut; flick it sideways and it spins on
- * the ring; tap it (or press Enter) to flip it over.
+ * The badge sways gently on its own; tap it (or press Enter) to flip it over.
  *
  * Self-contained: React is the only import. No 3D library, no model file.
  */
@@ -463,44 +462,12 @@ export default function LanyardBadge({
     }
 
     // ---- interaction -----------------------------------------------------
-    type Drag = { id: number; ox: number; oy: number; tx: number; ty: number; sx: number; sy: number; moved: boolean }
-    let drag: Drag | null = null
-    const local = (e: PointerEvent) => {
-      const r = root.getBoundingClientRect()
-      return [e.clientX - r.left, e.clientY - r.top]
-    }
     const flip = () => {
       spinTarget = spinTarget === 0 ? Math.PI : 0
       setShowBack(spinTarget !== 0)
     }
     flipRef.current = flip
-    const onDown = (e: PointerEvent) => {
-      if (e.button > 0) return
-      const [x, y] = local(e)
-      const T = pts[iT]
-      drag = { id: e.pointerId, ox: T.x - x, oy: T.y - y, tx: T.x, ty: T.y, sx: x, sy: y, moved: false }
-      pts[iT].w = 0
-      card.setPointerCapture(e.pointerId)
-      card.style.cursor = "grabbing"
-    }
-    const onMove = (e: PointerEvent) => {
-      if (!drag || e.pointerId !== drag.id) return
-      const [x, y] = local(e)
-      drag.tx = x + drag.ox
-      drag.ty = y + drag.oy
-      if (Math.hypot(x - drag.sx, y - drag.sy) > 5) drag.moved = true
-    }
-    const onUp = (e: PointerEvent) => {
-      if (!drag || e.pointerId !== drag.id) return
-      if (!drag.moved) flip()
-      drag = null
-      pts[iT].w = 0.8
-      card.style.cursor = "grab"
-    }
-    card.addEventListener("pointerdown", onDown)
-    card.addEventListener("pointermove", onMove)
-    card.addEventListener("pointerup", onUp)
-    card.addEventListener("pointercancel", onUp)
+    card.addEventListener("click", flip)
 
     // ---- loop --------------------------------------------------------------
     let raf = 0
@@ -515,15 +482,8 @@ export default function LanyardBadge({
         acc -= STEP
         steps++
         t += STEP
-        if (drag) {
-          const T = pts[iT]
-          T.px = T.x
-          T.py = T.y
-          T.x += (drag.tx - T.x) * 0.35
-          T.y += (drag.ty - T.y) * 0.35
-        }
         const C = pts[iC]
-        if (!reduced && !drag) {
+        if (!reduced) {
           // a draught in the room, so the badge is never perfectly still
           C.x += (22 * Math.sin(t * 0.7) + 12 * Math.sin(t * 1.9)) * STEP * STEP
         }
@@ -552,10 +512,7 @@ export default function LanyardBadge({
     return () => {
       cancelAnimationFrame(raf)
       observer.disconnect()
-      card.removeEventListener("pointerdown", onDown)
-      card.removeEventListener("pointermove", onMove)
-      card.removeEventListener("pointerup", onUp)
-      card.removeEventListener("pointercancel", onUp)
+      card.removeEventListener("click", flip)
     }
   }, [reduced, cw, ch, ringR, clipH, restTop, lookKey])
 
@@ -644,7 +601,7 @@ export default function LanyardBadge({
         ref={cardRef}
         role="button"
         tabIndex={0}
-        aria-label="Badge. Drag to swing, press to flip."
+        aria-label="Badge. Press to flip."
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault()
@@ -653,7 +610,7 @@ export default function LanyardBadge({
         }}
         aria-pressed={showBack}
         className="absolute left-0 top-0 outline-none pointer-events-auto focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
-        style={{ width: cw, height: ch + ringR + clipH, transformOrigin: "50% 0", cursor: "grab", touchAction: "none", willChange: "transform" }}
+        style={{ width: cw, height: ch + ringR + clipH, transformOrigin: "50% 0", cursor: "pointer", willChange: "transform" }}
       >
         {/* badge clip: hooks the ring, bites the card */}
         <div
